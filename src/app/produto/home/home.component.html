@@ -1,0 +1,42 @@
+<mat-sidenav-container>
+  
+  <mat-sidenav mode="side" opened>
+    <img class="avatar mat-elevation-z8" src="assets/logo.jpeg">
+  
+    <h4 class="name">Luma modas</h4>
+
+    <mat-divider></mat-divider>
+    <a type="button" mat-button class="menu-button" routerLink="home" routerLinkActive="active-link">
+      <mat-icon>home</mat-icon>
+      <span>Início</span>
+    </a>
+
+    <a type="button" mat-button class="menu-button" routerLink="/home/index" routerLinkActive="active-link">
+      <mat-icon>view_list</mat-icon>
+      <span>Lista de produtos</span>
+    </a>
+
+    <a type="button" mat-button class="menu-button" routerLink="/home/create" outerLinkActive="active-link">
+      <mat-icon>add</mat-icon>
+      <span>Cadastrar produtos</span>
+    </a>
+
+    <a  type="button" mat-button class="menu-button" >
+      <mat-icon>summarize</mat-icon>
+      <span>Relatório de vendas</span>
+    </a>
+
+    <mat-divider></mat-divider>
+    
+    <a type="button" mat-button class="menu-button"> 
+      <mat-icon>help</mat-icon>
+      <span>Help</span>
+    </a>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="content mat-elevation-z4">
+    <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

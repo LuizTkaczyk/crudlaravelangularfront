@@ -1,0 +1,180 @@
+<div class="containers">
+
+  <div class="header">
+    <h2>Lista de roupas cadastradas</h2>
+    <input class="form-control w-50 mb-2" type="text" name="search" autocomplete="off" placeholder="Buscar"
+      [(ngModel)]="searchText" (ngModelChange)="search($event)" id="search">
+  </div>
+
+  <div class="main">
+    <section>
+      <mat-accordion displayMode="flat" multi class="mat-table ">
+        <section class="mat-elevation-z2 mat-header-row ">
+          <span class="mat-header-row">Código</span>
+          <span class="mat-header-row">Nome</span>
+          <span class="mat-header-row">Quantidade</span>
+          <span class="mat-header-row">Valor de venda</span>
+          <span class="mat-header-row">Lucro</span>
+        </section>
+
+        <div *ngIf="!isSearch">
+          <mat-expansion-panel *ngFor="let produto of produtos">
+            <mat-expansion-panel-header class="mat-row">
+              <span class="mat-cell">{{produto.codProduto}}</span>
+              <span class="mat-cell">{{produto.nome}}</span>
+              <span class="mat-cell">{{produto.quantidade}}</span>
+              <span class="mat-cell">{{produto.valorVenda | currency: "BRL"}}</span>
+              <span class="mat-cell">{{produto.valorLucro}}%</span>
+            </mat-expansion-panel-header>
+            <hr>
+            <form>
+              <div class="container">
+                <div class="form-group row">
+                  <div class="col">
+                    <label for="valorCompra">Valor pago neste produto</label>
+                    <input readonly [value]="produto.valorCompra | currency:'BRL'" class="form-control w-50">
+                  </div>
+
+                  <div class="col">
+
+                    <label for="quantidade">Quantidade deste produto</label>
+                    <h4>{{produto.quantidade}} unidades</h4>
+                  </div>
+
+                  <div class="col">
+                    <label for="valorLucro">O lucro em % será de</label>
+                    <h4>{{produto.valorLucro}}%</h4>
+                  </div>
+
+                </div>
+
+                <div class="form-group row">
+                  <div class="col">
+                    <label for="valorVenda">Este produto será vendido por</label>
+                    <input readonly [value]="produto.valorVenda | currency:'BRL'" class="form-control w-50">
+                  </div>
+
+                  <div class="col">
+                    <label for="valorTotalCompra">O valor total desta compra foi (atacado)</label>
+                    <input readonly type="text" [value]="produto.valorTotalCompra| currency:'BRL'"
+                      class="form-control w-50">
+                  </div>
+
+                  <div class="col">
+                    <label for="valorTotalVenda">O valor total desta venda será (varejo)</label>
+                    <input readonly type="text" [value]="produto.valorTotalVenda | currency:'BRL'"
+                      class="form-control w-50">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col">
+                    <label for="valorVenda">Data do cadastro</label>
+                    <input readonly class="form-control" [value]="produto.data_compra | date:'dd/MM/yyy' "
+                      style="width: 200px">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <a href="#" [routerLink]="['/produto/', 'edit', produto.id]"
+                    class="btn btn-primary btn-sm mr-3">Editar</a>
+                  <button type="button" class="btn btn-danger btn-sm" (click)="onDelete(produto.id)">
+                    Excluir
+                  </button>
+                </div>
+              </div>
+            </form>
+          </mat-expansion-panel>
+        </div>
+
+        <div *ngIf="isSearch ">
+          <mat-expansion-panel *ngFor="let produto of searchProdutos | filter:searchText">
+            <mat-expansion-panel-header class="mat-row">
+              <span class="mat-cell">{{produto.codProduto}}</span>
+              <span class="mat-cell">{{produto.nome}}</span>
+              <span class="mat-cell">{{produto.quantidade}}</span>
+              <span class="mat-cell">{{produto.valorVenda | currency: "BRL"}}</span>
+              <span class="mat-cell">{{produto.valorLucro}}%</span>
+            </mat-expansion-panel-header>
+            <hr>
+            <form>
+              <div class="container">
+                <div class="form-group row">
+                  <div class="col">
+                    <label for="valorCompra">Valor pago neste produto</label>
+                    <input readonly [value]="produto.valorCompra | currency:'BRL'" class="form-control w-50">
+                  </div>
+
+                  <div class="col">
+
+                    <label for="quantidade">Quantidade deste produto</label>
+                    <h4>{{produto.quantidade}} unidades</h4>
+                  </div>
+
+                  <div class="col">
+                    <label for="valorLucro">O lucro em % será de</label>
+                    <h4>{{produto.valorLucro}}%</h4>
+                  </div>
+
+                </div>
+
+                <div class="form-group row">
+                  <div class="col">
+                    <label for="valorVenda">Este produto será vendido por</label>
+                    <input readonly [value]="produto.valorVenda | currency:'BRL'" class="form-control w-50">
+                  </div>
+
+                  <div class="col">
+                    <label for="valorTotalCompra">O valor total desta compra foi (atacado)</label>
+                    <input readonly type="text" [value]="produto.valorTotalCompra| currency:'BRL'"
+                      class="form-control w-50">
+                  </div>
+
+                  <div class="col">
+                    <label for="valorTotalVenda">O valor total desta venda será (varejo)</label>
+                    <input readonly type="text" [value]="produto.valorTotalVenda | currency:'BRL'"
+                      class="form-control w-50">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col">
+                    <label for="valorVenda">Data do cadastro</label>
+                    <input readonly class="form-control" [value]="produto.data_compra | date:'dd/MM/yyy' "
+                      style="width: 200px">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <a href="#" [routerLink]="['/produto/', 'edit', produto.id]"
+                    class="btn btn-primary btn-sm mr-3">Editar</a>
+                  <button type="button" class="btn btn-danger btn-sm" (click)="onDelete(produto.id)">
+                    Excluir
+                  </button>
+                </div>
+              </div>
+            </form>
+          </mat-expansion-panel>
+        </div>
+
+      </mat-accordion>
+    </section>
+
+    <div>
+      <mat-spinner class="d-flex loading" *ngIf="isLoading === false"></mat-spinner>
+    </div>
+
+  </div>
+
+  <div [ngClass]="{'d-none' : isSearch}" class="footer">
+    <mat-paginator #paginator [length]="this.paginator.length" [pageIndex]="1" [pageSize]="10"
+      [pageSizeOptions]="[5,10,20,30]" (page)="pageChanged($event)" aria-label="Select page" showFirstLastButtons>
+    </mat-paginator>
+  </div>
+
+</div>
+<ng-template #deleteModal>
+  <div class="modal-body text-center">
+    <p>Deseja excluir este produto?</p>
+    <button type="button" class="btn btn-danger mr-3" (click)="onConfirmDelete()">Sim</button>
+    <button type="button" class="btn btn-primary" (click)="onDeclineDelete()">Não</button>
+  </div>
+</ng-template>

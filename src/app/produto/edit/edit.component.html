@@ -1,0 +1,90 @@
+<div class="container">
+
+  <div class="d-flex justify-content-between">
+    <h4>Editar roupa</h4>
+    
+  </div>
+
+  <hr>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+
+    <div class="form-group row">
+
+      <div class="col-md-4">
+        <label for="title">Nome:</label>
+        <input formControlName="nome" id="nome" type="text" class="form-control">
+        <div *ngIf="f.nome.touched && f.nome.invalid" class="alert alert-danger">
+          <div *ngIf="f.nome.errors?.['required']">*O nome é obrigatório.</div>
+          <div *ngIf="f.nome.errors?.['pattern']">*O nome deve conter somente letras.</div>
+        </div>
+      </div>
+
+      <div class="col-md-2">
+        <label for="quantidade">Quantidade:</label>
+        <input formControlName="quantidade" id="quantidade" type="number" class="form-control" min="1"
+          (ngModelChange)="addQuantidade($event)">
+        <div *ngIf="f.quantidade.touched && f.quantidade.invalid" class="alert alert-danger">
+          <div *ngIf="f.quantidade.errors.required">*Quantidade é obrigatório.</div>
+        </div>
+      </div>
+
+
+      <div class="col-md-2 ">
+        <label for="valorCompra">Valor de compra</label>
+        <input (ngModelChange)="addValor($event)" formControlName="valorCompra" id="valorCompra" type="number"
+          class="form-control" min="1">
+        <div *ngIf="f.valorCompra.touched && f.valorCompra.invalid" class="alert alert-danger">
+          <div *ngIf="f.valorCompra.errors.required">*Valor de compra é obrigatório.</div>
+        </div>
+      </div>
+
+      <div class="col-md-3 ">
+        <label for="valorTotalCompra">Valor total de compras</label>
+        <input (ngModelChange)="getValorCompra($event)" readonly type="text" formControlName="valorTotalCompra" id="valorTotalCompra" class="form-control"
+          [value]="this.valorTotalCompra | currency:'BRL'">
+      </div>
+
+    </div>
+
+    <hr>
+
+    <div class="form-group row">
+
+      <div class="col-md-2 ">
+        <label for="lucro">Lucro em %</label>
+        <input (ngModelChange)="calcLucro($event)" formControlName="lucro" id="lucro" type="number" class="form-control"
+          min="0">
+        <div *ngIf="f.lucro.touched && f.lucro.invalid" class="alert alert-danger">
+          <div *ngIf="f.lucro.errors.required">*Margem de lucro é obrigatório.</div>
+        </div>
+      </div>
+
+      <div class="col-md-3 ">
+        <label for="valorVenda">Valor final cada unidade</label>
+        <input readonly formControlName="valorVenda" id="valorVenda" type="text" class="form-control"
+          [value]="this.valorVenda | currency:'BRL'">
+      </div>
+
+      <div class="col-md-3">
+        <label for="valorTotalVenda">Valor total de venda</label>
+        <input readonly type="text" formControlName="valorTotalVenda" id="valorTotalVenda" class="form-control"
+          [value]="this.valorTotalVenda | currency:'BRL'">
+      </div>
+
+    </div>
+
+    <div class="form-group">
+      <button type="submit" class="btn btn-danger btn-md mr-5">
+       Atualizar
+      </button>
+
+      <a routerLink="/home/index"  class="btn btn-primary btn-md mr-3">Voltar</a>
+      
+    </div>
+
+    
+
+  </form>
+
+</div>

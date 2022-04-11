@@ -1,0 +1,138 @@
+.mat-accordion .mat-header-row {
+  padding-left: 1.5rem;
+  padding-right: 2rem;
+  border-bottom: none;
+}
+
+.mat-expansion-panel-header.mat-row {
+  border-bottom: none;
+}
+
+$mat-header-row-height: 56px;
+$mat-row-height: 48px;
+$mat-row-horizontal-padding: 24px;
+
+.mat-table {
+  display: block;
+  background: #f7f7f7;
+}
+
+.mat-header-row {
+  min-height: $mat-header-row-height;
+  background-color: rgb(65, 64, 64);
+  font-size: 14pt;
+}
+
+.mat-row {
+  min-height: $mat-row-height;
+  background-color: white;
+  border: 1px solid black;
+}
+
+.mat-row,
+.mat-header-row {
+  display: flex;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  align-items: center;
+  padding: 0 $mat-row-horizontal-padding;
+  box-sizing: border-box;
+
+  &::after {
+    display: inline-block;
+    min-height: inherit;
+    content: "";
+  }
+}
+
+.mat-cell {
+  flex: 1;
+  overflow: hidden;
+  word-wrap: break-word;
+  text-align: center;
+  font-size: 14pt;
+  color: rgb(0, 0, 0);
+}
+
+.mat-header-row {
+  flex: 1;
+  overflow: hidden;
+  word-wrap: break-word;
+  color: white;
+  justify-content: center;
+}
+
+.mat-expansion-panel {
+  background-color: rgb(233, 218, 218);
+  color: black;
+}
+.mat-paginator {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 16px;
+  //background-color: red;
+}
+::ng-deep .mat-paginator-page-size .mat-select-trigger {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 16px;
+  text-align: center;
+}
+// .header{
+//   position: fixed;
+//   left: 298px;
+//   right: -3px;
+//   top: 22px;
+//   height: 60px;
+//   width: 57%;
+//   background-color: #7e800000;
+//   display: contents;
+//   background-color: blue
+// }
+
+// .conteudo{
+//   border-top-left-radius: 10px;
+//   border-top-right-radius: 10px;
+//   width: 100%;
+ 
+//   padding: -4px;
+//   overflow-y: scroll;
+//   position: inherit;
+//   left: 0;
+//   top: 0;
+//   height:68vh;
+//   //background-color: yellow;
+// }
+
+.loading{
+  margin-top:15%;
+  margin-left:45%;
+}
+
+// .sections{
+//   z-index:1;
+// }
+
+.containers{
+  display: grid;
+  height: 100%;
+  grid-template-rows: 0fr 1fr 0fr;
+}
+
+.header{
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+
+.main{
+  grid-column-start: 1;
+  grid-column-end:3;
+  overflow: auto;
+  height: 100%;
+  
+}
+
+.footer{
+  grid-column-start:1;
+  grid-column-end:3;
+  display: flex;
+  
+}
