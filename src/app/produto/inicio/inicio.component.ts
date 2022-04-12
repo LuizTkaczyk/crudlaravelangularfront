@@ -23,10 +23,18 @@ export class InicioComponent implements OnInit {
   isSearch: boolean = false;
   lista: any[] = [];
   valorVenda = 0;
+  valorDesconto;
   quantidade = 1;
   descontoP = 0;
-  precoFinal = 0;
+  precoFinal;
   dataVenda;
+  somaValorComDesconto = [];
+  somaValorSemDesconto = [];
+  totalComDesconto;
+  totalSemDesconto;
+  totalDesconto;
+
+  teste;
 
   constructor(
     private ngbCalendar: NgbCalendar,
@@ -103,6 +111,29 @@ export class InicioComponent implements OnInit {
   }
 
   adicionar(item: any) {
+    this.calculosFinais();
+    this.addProdutosLista();
+
+    this.buscarCodigo.nativeElement.value = '';
+    this.form.reset();
+    this.form.get('quantidade').setValue(1);
+    this.form.get('desconto').setValue(0);
+    this.model = this.today;
+  }
+
+  calculosFinais(){
+    //soma dos valores com desconto
+    this.somaValorComDesconto.push(this.quantidade * this.valorVenda - this.quantidade * this.valorVenda * (this.descontoP / 100));
+    this.totalComDesconto = this.somaValorComDesconto.reduce((a, b) => (a + b));
+    
+    //soma dos valores sem desconto
+    this.somaValorSemDesconto.push(Number(this.valorVenda * this.quantidade))
+    this.totalSemDesconto = this.somaValorSemDesconto.reduce((a, b) => (a + b));
+
+    this.totalDesconto = this.totalSemDesconto - this.totalComDesconto;
+  }
+
+  addProdutosLista(){
     this.lista.push({
       codigo: this.buscarCodigo.nativeElement.value,
       nome: this.form.get('nome').value,
@@ -113,27 +144,21 @@ export class InicioComponent implements OnInit {
         this.quantidade * this.valorVenda -
         this.quantidade * this.valorVenda * (this.descontoP / 100),
       valorSemDesconto: this.valorVenda * this.quantidade,
-      dataVenda:
-        this.model['day'] +
-        '/' +
-        this.model['month'] +
-        '/' +
-        this.model['year'],
+      dataVenda:this.model['day'] +'/' +this.model['month'] +'/' +this.model['year'],
+      totalComDesconto: this.totalComDesconto,
+      totalSemDesconto:this.totalSemDesconto,
+      totalDesconto:this.totalDesconto,
+
     });
-    this.buscarCodigo.nativeElement.value = '';
-    this.form.reset();
-    this.form.get('quantidade').setValue(1);
-    this.form.get('desconto').setValue(0);
-    this.model = this.today;
   }
 
   finalizar() {
-    console.log(this.lista);
     if(this.lista.length > 0){
       this.sharedService.create(Route.VENDAS,this.lista).subscribe((res: any) => {
       });
     }else{
       return
     }
+    this.lista = [];
   }
 }
