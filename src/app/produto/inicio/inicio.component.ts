@@ -33,8 +33,8 @@ export class InicioComponent implements OnInit {
   totalComDesconto;
   totalSemDesconto;
   totalDesconto;
-
-  teste;
+  estoqueFinal;
+  id;
 
   constructor(
     private ngbCalendar: NgbCalendar,
@@ -45,7 +45,7 @@ export class InicioComponent implements OnInit {
 
   ngOnInit() {
     this.model = this.today;
-    this.getAll();
+    // this.getAll();
     this.formulario();
   }
 
@@ -69,41 +69,58 @@ export class InicioComponent implements OnInit {
     return this.form?.controls;
   }
 
-  getAll() {
-    this.sharedService.get(Route.TODOS_PRODUTOS, null).subscribe((data: Produto[]) => {
-      this.searchText = data;
-    });
-  }
+  // getAll() {
+  //   this.sharedService.get(Route.TODOS_PRODUTOS, null).subscribe((data) => {
+  //     this.searchText = data;
+  //   });
+  // }
 
   buscar() {
-    this.form.get('quantidade').setValue(1);
-    let hasCode = this.buscarCodigo.nativeElement.value;
-    let busca = this.form;
-    let quantidadeEstoque;
-    let valor;
+    let codigo = this.buscarCodigo.nativeElement.value;
+    console.log(codigo)
+    this.sharedService.find(Route.BUSCA_PRODUTO, codigo).subscribe((data)=>{
+      console.log(data)
+      this.form.get('nome').setValue(data.nome);
+      this.form.get('precoVenda').setValue(data.valorVenda);
+      this.estoque = data.quantidade;
+      this.id = data.id;
+      this.form.get('precoComDesconto').setValue(data.valorVenda);
+      this.form.get('precoSemDesconto').setValue(data.valorVenda);
+    })
+
+    console.log(this.descontoP)
+   
+    
+    // this.form.get('quantidade').setValue(1);
+    // let hasCode = this.buscarCodigo.nativeElement.value;
+    // let busca = this.form;
+    // let quantidadeEstoque;
+    // let valor;
+    // let id;
     
 
-    this.searchText.forEach(function (value) {
-      if (value.codProduto == hasCode) {
-        busca.get('nome').setValue(value.nome);
-        busca.get('precoVenda').setValue(value.valorVenda);
-        busca.get('precoComDesconto').setValue(value.valorVenda);
-        busca.get('precoSemDesconto').setValue(value.valorVenda);
-        quantidadeEstoque = value.quantidade;
-        valor = Number(value.valorVenda);
-      }
-      if (value.codProduto != hasCode) {
-        return;
-      }
-    });
-
-
-    this.valorVenda = Number(valor);
-    this.estoque = quantidadeEstoque;
-    if (this.estoque > quantidadeEstoque) {
-      console.log('menor');
-    }
-    if (hasCode) {
+    // this.searchText.forEach(function (value) {
+    //   if (value.codProduto == hasCode) {
+    //     busca.get('nome').setValue(value.nome);
+    //     busca.get('precoVenda').setValue(value.valorVenda);
+    //     busca.get('precoComDesconto').setValue(value.valorVenda);
+    //     busca.get('precoSemDesconto').setValue(value.valorVenda);
+    //     quantidadeEstoque = value.quantidade;
+    //     valor = Number(value.valorVenda);
+    //     id = value.id;
+    //   }
+    //   if (value.codProduto != hasCode) {
+    //     return;
+    //   }
+    // });
+    // console.log(quantidadeEstoque)
+    // this.id = id
+    // this.valorVenda = Number(valor);
+    // this.estoque = quantidadeEstoque;
+    // if (this.estoque > quantidadeEstoque) {
+    //   console.log('menor');
+    // }
+    if (codigo) {
       this.isSearch = true;
     } else {
       return;
@@ -113,12 +130,24 @@ export class InicioComponent implements OnInit {
   adicionar(item: any) {
     this.calculosFinais();
     this.addProdutosLista();
+    this.subQuantidade();
+    console.log(this.id)
 
     this.buscarCodigo.nativeElement.value = '';
     this.form.reset();
     this.form.get('quantidade').setValue(1);
     this.form.get('desconto').setValue(0);
     this.model = this.today;
+  }
+
+  subQuantidade(){
+    let quantidade = ({
+      produtoId:this.id,
+      quantidadeVendida:this.form.get('quantidade').value
+    })
+   
+
+    this.sharedService.post(Route.REMOVE_ESTOQUE, quantidade).subscribe((res:any)=>{})
   }
 
   calculosFinais(){
@@ -154,7 +183,7 @@ export class InicioComponent implements OnInit {
 
   finalizar() {
     if(this.lista.length > 0){
-      this.sharedService.create(Route.VENDAS,this.lista).subscribe((res: any) => {
+      this.sharedService.post(Route.VENDAS,this.lista).subscribe((res: any) => {
       });
     }else{
       return

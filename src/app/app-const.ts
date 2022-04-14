@@ -5,5 +5,7 @@ export class Route {
     static EDITAR_PRODUTO = 'update-produto/';
     static DELETE_PRODUTO = 'delete-produto/';
     static FIND = 'get-produto/';
-    static PAGINATE_PRODUTOS = 'paginate-produto/'
+    static PAGINATE_PRODUTOS = 'paginate-produto/';
+    static REMOVE_ESTOQUE = 'remove-estoque';
+    static BUSCA_PRODUTO = 'busca-produto/';
 }

@@ -17,7 +17,7 @@ export class SharedService {
     return this.httpService.get(this.apiURL +`${route}`);
   }
 
-  create(route, data):Observable<any>{
+  post(route, data):Observable<any>{
     return this.httpService.post(this.apiURL +`${route}`, data);
   }
 

@@ -60,7 +60,7 @@ export class CreateComponent implements OnInit {
     this.form.value.valorTotalVenda = this.quantidade * (((this.lucro / 100) * (this.valorCompra)) + this.valorCompra);
     this.form.value.codProduto = this.codProduto;
 
-    this.sharedService.create(Route.CRIAR_PRODUTO ,this.form.value).subscribe(res => {
+    this.sharedService.post(Route.CRIAR_PRODUTO ,this.form.value).subscribe(res => {
       //console.log('Pessoa criada com sucesso');
       this.router.navigateByUrl('home/index');
     })
