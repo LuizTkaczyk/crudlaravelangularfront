@@ -34,6 +34,7 @@ export class InicioComponent implements OnInit {
   totalSemDesconto;
   totalDesconto;
   estoqueFinal;
+  idVenda = 2;
   id;
 
   constructor(
@@ -47,6 +48,9 @@ export class InicioComponent implements OnInit {
     this.model = this.today;
     // this.getAll();
     this.formulario();
+    this.sharedService.get(Route.CODIGO_VENDA, null).subscribe((data)=>{
+      this.idVenda = data
+    })
   }
 
   formulario() {
@@ -69,17 +73,9 @@ export class InicioComponent implements OnInit {
     return this.form?.controls;
   }
 
-  // getAll() {
-  //   this.sharedService.get(Route.TODOS_PRODUTOS, null).subscribe((data) => {
-  //     this.searchText = data;
-  //   });
-  // }
-
   buscar() {
     let codigo = this.buscarCodigo.nativeElement.value;
-    console.log(codigo)
     this.sharedService.find(Route.BUSCA_PRODUTO, codigo).subscribe((data)=>{
-      console.log(data)
       this.form.get('nome').setValue(data.nome);
       this.form.get('precoVenda').setValue(data.valorVenda);
       this.estoque = data.quantidade;
@@ -87,39 +83,6 @@ export class InicioComponent implements OnInit {
       this.form.get('precoComDesconto').setValue(data.valorVenda);
       this.form.get('precoSemDesconto').setValue(data.valorVenda);
     })
-
-    console.log(this.descontoP)
-   
-    
-    // this.form.get('quantidade').setValue(1);
-    // let hasCode = this.buscarCodigo.nativeElement.value;
-    // let busca = this.form;
-    // let quantidadeEstoque;
-    // let valor;
-    // let id;
-    
-
-    // this.searchText.forEach(function (value) {
-    //   if (value.codProduto == hasCode) {
-    //     busca.get('nome').setValue(value.nome);
-    //     busca.get('precoVenda').setValue(value.valorVenda);
-    //     busca.get('precoComDesconto').setValue(value.valorVenda);
-    //     busca.get('precoSemDesconto').setValue(value.valorVenda);
-    //     quantidadeEstoque = value.quantidade;
-    //     valor = Number(value.valorVenda);
-    //     id = value.id;
-    //   }
-    //   if (value.codProduto != hasCode) {
-    //     return;
-    //   }
-    // });
-    // console.log(quantidadeEstoque)
-    // this.id = id
-    // this.valorVenda = Number(valor);
-    // this.estoque = quantidadeEstoque;
-    // if (this.estoque > quantidadeEstoque) {
-    //   console.log('menor');
-    // }
     if (codigo) {
       this.isSearch = true;
     } else {
@@ -177,6 +140,7 @@ export class InicioComponent implements OnInit {
       totalComDesconto: this.totalComDesconto,
       totalSemDesconto:this.totalSemDesconto,
       totalDesconto:this.totalDesconto,
+      idVenda:this.idVenda
 
     });
   }

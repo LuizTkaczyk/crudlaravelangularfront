@@ -29,7 +29,7 @@
 
           <div class="form-outline">
             <label class="form-label" for="precoVenda">Valor de venda</label>
-            <input formControlName="precoVenda" readonly type="text" class="form-control"
+            <input formControlName="precoVenda" readonly type="text" class="form-control" [(ngModel)]="this.valorVenda"
               [value]="this.valorVenda | currency:'BRL'" />
           </div>
         </div>
@@ -64,10 +64,9 @@
           <!-- Name input -->
           <div class="form-outline">
             <label class="form-label" for="precoComDesconto">Valor total com desconto</label>
-            <input [(ngModel)]="this.valorDesconto" readonly type="text" class="form-control" formControlName="precoComDesconto"
+            <input [(ngModel)]="this.valorDesconto" readonly type="text" class="form-control"
+              formControlName="precoComDesconto"
               [value]="this.quantidade*this.valorVenda - ((this.quantidade * this.valorVenda) * (this.descontoP/100)) | currency:'BRL'" />
-
-
           </div>
         </div>
 
@@ -76,7 +75,7 @@
           <div class="form-outline">
             <label class="form-label" for="precoSemDesconto">Valor total sem desconto</label>
             <input [(ngModel)]="this.precoFinal" readonly type="text" class="form-control"
-              formControlName="precoSemDesconto" [value]="this.valorVenda*this.quantidade | currency:'BRL'" />
+              formControlName="precoSemDesconto" [value]="this.valorVenda * this.quantidade | currency:'BRL'" />
           </div>
         </div>
 
@@ -97,6 +96,14 @@
               <button class="btn btn-secondary btn-sm m-2 float-end" (click)="d.close()">Fechar</button>
             </ng-template>
 
+          </div>
+
+          <div class="col-3">
+            <!-- Name input -->
+            <div class="form-outline">
+              <label class="form-label" for="precoComDesconto">Código da venda</label>
+              <input  formControlName="codigoVenda" [(ngModel)]="this.idVenda" readonly type="text" class="form-control"/>
+            </div>
           </div>
 
         </div>
@@ -145,17 +152,17 @@
 
   <div class="footer d-flex justify-content-between">
 
-    
+
     <div class="form-group row">
-    
-    
+
+
       <div class="col-sm-10">
         <button class="btn btn-primary" (click)="finalizar()">Finalizar</button>
       </div>
 
     </div>
     <div class="form-group row">
-    
+
       <div class="form-outline">
         <label class="form-label" for="precoVenda">Total com desconto</label>
         <input formControlName="precoVenda" readonly type="text" class="form-control"
@@ -165,7 +172,7 @@
     </div>
 
     <div class="form-group row">
-    
+
       <div class="form-outline">
         <label class="form-label" for="precoVenda">Total sem desconto</label>
         <input formControlName="precoVenda" readonly type="text" class="form-control"
@@ -175,13 +182,13 @@
     </div>
 
     <div class="form-group row">
-    
+
       <div class="form-outline">
         <label class="form-label" for="precoVenda">Total de desconto</label>
         <input formControlName="precoVenda" readonly type="text" class="form-control"
           [value]="this.totalDesconto| currency:'BRL'" />
       </div>
-      
+
     </div>
 
 

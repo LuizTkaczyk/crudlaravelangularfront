@@ -8,4 +8,5 @@ export class Route {
     static PAGINATE_PRODUTOS = 'paginate-produto/';
     static REMOVE_ESTOQUE = 'remove-estoque';
     static BUSCA_PRODUTO = 'busca-produto/';
+    static CODIGO_VENDA = 'codigo-venda'
 }
