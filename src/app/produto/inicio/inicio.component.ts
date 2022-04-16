@@ -34,7 +34,7 @@ export class InicioComponent implements OnInit {
   totalSemDesconto;
   totalDesconto;
   estoqueFinal;
-  idVenda = 2;
+  idVenda;
   id;
 
   constructor(
@@ -48,6 +48,10 @@ export class InicioComponent implements OnInit {
     this.model = this.today;
     // this.getAll();
     this.formulario();
+    this.geraCodVenda();
+  }
+  
+  geraCodVenda(){
     this.sharedService.get(Route.CODIGO_VENDA, null).subscribe((data)=>{
       this.idVenda = data
     })
@@ -62,6 +66,7 @@ export class InicioComponent implements OnInit {
       precoComDesconto: new FormControl(''),
       precoSemDesconto: new FormControl(''),
       dataVenda: new FormControl('', [Validators.required]),
+      codVenda:new FormControl('')
     });
   }
 
@@ -146,6 +151,7 @@ export class InicioComponent implements OnInit {
   }
 
   finalizar() {
+    this.geraCodVenda();
     if(this.lista.length > 0){
       this.sharedService.post(Route.VENDAS,this.lista).subscribe((res: any) => {
       });

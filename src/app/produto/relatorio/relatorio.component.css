@@ -1,0 +1,23 @@
+.containers {
+  display: grid;
+  height: 100%;
+  grid-template-rows: 0fr 1fr 0fr;
+}
+
+.header {
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+
+.main {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  overflow: auto;
+  height: 100%;
+}
+
+.footer {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  display: flex;
+}

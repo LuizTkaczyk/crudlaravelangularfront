@@ -102,7 +102,7 @@
             <!-- Name input -->
             <div class="form-outline">
               <label class="form-label" for="precoComDesconto">Código da venda</label>
-              <input  formControlName="codigoVenda" [(ngModel)]="this.idVenda" readonly type="text" class="form-control"/>
+              <input [ngModelOptions]="{standalone: true}"  [(ngModel)]="this.idVenda" readonly type="text" class="form-control" [value]="this.idVenda"/>
             </div>
           </div>
 
@@ -157,7 +157,7 @@
 
 
       <div class="col-sm-10">
-        <button class="btn btn-primary" (click)="finalizar()">Finalizar</button>
+        <button class="btn btn-primary" (click)="finalizar()" [disabled]="this.lista.length <= 0 ">Finalizar</button>
       </div>
 
     </div>
@@ -165,7 +165,7 @@
 
       <div class="form-outline">
         <label class="form-label" for="precoVenda">Total com desconto</label>
-        <input formControlName="precoVenda" readonly type="text" class="form-control"
+        <input  readonly type="text" class="form-control"
           [value]="this.totalComDesconto| currency:'BRL'" />
       </div>
 
@@ -175,7 +175,7 @@
 
       <div class="form-outline">
         <label class="form-label" for="precoVenda">Total sem desconto</label>
-        <input formControlName="precoVenda" readonly type="text" class="form-control"
+        <input  readonly type="text" class="form-control"
           [value]="this.totalSemDesconto| currency:'BRL'" />
       </div>
 
@@ -185,13 +185,11 @@
 
       <div class="form-outline">
         <label class="form-label" for="precoVenda">Total de desconto</label>
-        <input formControlName="precoVenda" readonly type="text" class="form-control"
+        <input readonly type="text" class="form-control"
           [value]="this.totalDesconto| currency:'BRL'" />
       </div>
 
     </div>
-
-
 
   </div>
 

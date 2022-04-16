@@ -30,8 +30,9 @@ import { InicioComponent } from './inicio/inicio.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
-import { NgbDateAdapter, NgbDateParserFormatter, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CustomDateFormat } from './dateFormatInicio/CustomDateFormat';
+import { RelatorioComponent } from './relatorio/relatorio.component';
 
 registerLocaleData(ptBr);
 
@@ -41,6 +42,7 @@ registerLocaleData(ptBr);
     CreateComponent,
     EditComponent,
     InicioComponent,
+    RelatorioComponent
   ],
   imports: [
     CommonModule,

@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { SharedService } from '../../shared/shared.service';
+import { Route } from '../../app-const';
+import { KeyValue } from '@angular/common';
 
 @Component({
   selector: 'app-relatorio',
@@ -7,9 +10,32 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RelatorioComponent implements OnInit {
 
-  constructor() { }
-
+  relatorio;
+  objectKeys = Object.keys;
+  
+  constructor(private sharedServie:SharedService) { }
+  
   ngOnInit() {
+    this.getRelatorios()
+  }
+  
+  getRelatorios(){
+    this.sharedServie.get(Route.RELATORIOS).subscribe((data)=>{
+      this.relatorio = data;
+      console.log(data)
+    })
+  }
+  keyDescOrder = (a: KeyValue<any,any>, b: KeyValue<any,any>): number => {
+    return a.key > b.key ? -1 : (b.key > a.key ? 1 : 0);
   }
 
+  // teste(){
+  //   for (const key in this.relatorio) {
+  //     if (Object.prototype.hasOwnProperty.call(this.relatorio, key)) {
+  //       const element = this.relatorio[key];
+  //       this.relatorio = element
+        
+  //     }
+  //   }
+  // }
 }
