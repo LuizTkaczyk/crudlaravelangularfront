@@ -33,6 +33,7 @@ import { MatInputModule } from '@angular/material/input';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CustomDateFormat } from './dateFormatInicio/CustomDateFormat';
 import { RelatorioComponent } from './relatorio/relatorio.component';
+import { ConfigsComponent } from './configs/configs.component';
 
 registerLocaleData(ptBr);
 
@@ -42,10 +43,11 @@ registerLocaleData(ptBr);
     CreateComponent,
     EditComponent,
     InicioComponent,
-    RelatorioComponent
+    RelatorioComponent,
+    ConfigsComponent
   ],
   imports: [
-    CommonModule,
+  CommonModule,
     ProdutoRoutingModule,
     FormsModule,
     ReactiveFormsModule,

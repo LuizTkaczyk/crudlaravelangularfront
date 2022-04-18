@@ -30,6 +30,10 @@ export class CreateComponent implements OnInit {
 
   ngOnInit(): void {
     this.randomCode();
+    this.formulario();
+  }
+
+  formulario(){
     this.form = new FormGroup({
       nome: new FormControl('', [Validators.required]),
       quantidade: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$")]),

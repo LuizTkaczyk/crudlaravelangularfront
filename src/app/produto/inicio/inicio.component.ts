@@ -36,6 +36,19 @@ export class InicioComponent implements OnInit {
   estoqueFinal;
   idVenda;
   id;
+  taxaJurosVista;
+  taxaJurosPrazo;
+
+  // adicionar debito!!!!!!!!
+  selectedOptionPagamento = 'Dinheiro';
+  formasPagamento = [
+    {name:'Dinheiro', value:1},
+    {name:'Cartão crédito - à vista', value:2},
+    {name:'Cartão crédito - à prazo', value:3},
+    {name:'Cartão débito', value:4},
+    {name:'PIX', value:5},
+    {name:'Outro',value:6}
+  ]
 
   constructor(
     private ngbCalendar: NgbCalendar,
@@ -46,14 +59,21 @@ export class InicioComponent implements OnInit {
 
   ngOnInit() {
     this.model = this.today;
-    // this.getAll();
     this.formulario();
     this.geraCodVenda();
+    this.getTaxaJurosCartao();
   }
   
   geraCodVenda(){
     this.sharedService.get(Route.CODIGO_VENDA, null).subscribe((data)=>{
       this.idVenda = data
+    })
+  }
+
+  getTaxaJurosCartao(){
+    this.sharedService.get(Route.GET_JUROS).subscribe((data)=>{
+      this.taxaJurosVista = data.taxaJurosVista + " %";
+      this.taxaJurosPrazo = data.taxaJurosPrazo + " %";
     })
   }
 
@@ -145,7 +165,8 @@ export class InicioComponent implements OnInit {
       totalComDesconto: this.totalComDesconto,
       totalSemDesconto:this.totalSemDesconto,
       totalDesconto:this.totalDesconto,
-      idVenda:this.idVenda
+      idVenda:this.idVenda,
+      formaPagamento:this.selectedOptionPagamento
 
     });
   }
@@ -158,6 +179,11 @@ export class InicioComponent implements OnInit {
     }else{
       return
     }
+    console.log(this.lista)
     this.lista = [];
   }
+
+  // teste(){
+  //   console.log(this.selectedOptionPagamento)
+  // }
 }

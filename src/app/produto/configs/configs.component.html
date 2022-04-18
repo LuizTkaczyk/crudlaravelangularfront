@@ -1,0 +1,54 @@
+<div>
+
+  <div class="d-flex justify-content-between">
+    <h2>Configurações</h2>
+
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+
+    <div class="row d-flex">
+
+      <!-- <div class="col-3">
+        <label for="title">Taxa de juros do cartão:</label>
+       
+         
+       
+      </div>
+
+      <div class="col-2">
+        <label for="title">Taxa de juros do cartão:</label>
+       
+          <input formControlName="taxaJuros" type="number" class="form-control" [(ngModel)]="this.taxaJuro" min="0">
+       
+      </div> -->
+
+      <div class="col-2">
+        <!-- Name input -->
+        <label class="form-label" for="desconto">Taxa de juros do cartão à vista</label>
+        <div class="form-outline">
+          <input formControlName="taxaJurosVista" type="number" class="form-control" [(ngModel)]="this.taxaJuroVista" min="0">
+        </div>
+      </div>
+
+      <div class="col-2">
+        <!-- Name input -->
+        <label class="form-label" for="desconto">Taxa de juros do cartão à prazo</label>
+        <div class="form-outline">
+          <input formControlName="taxaJurosPrazo" type="number" class="form-control" [(ngModel)]="this.taxaJuroPrazo" min="0">
+        </div>
+      </div>
+
+
+    </div>
+    <hr>
+    <div class="form-group">
+      <button class="btn btn-primary  mr-5" type="submit" [disabled]="!form.valid">
+        Salvar
+      </button>
+
+      <a routerLink="/home" class="btn btn-primary btn-md mr-3">Voltar</a>
+    </div>
+
+  </form>
+</div>

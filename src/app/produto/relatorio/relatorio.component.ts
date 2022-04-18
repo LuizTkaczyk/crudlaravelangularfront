@@ -22,20 +22,11 @@ export class RelatorioComponent implements OnInit {
   getRelatorios(){
     this.sharedServie.get(Route.RELATORIOS).subscribe((data)=>{
       this.relatorio = data;
-      console.log(data)
     })
   }
+
+  //ordena os produtos de acordo com a data
   keyDescOrder = (a: KeyValue<any,any>, b: KeyValue<any,any>): number => {
     return a.key > b.key ? -1 : (b.key > a.key ? 1 : 0);
   }
-
-  // teste(){
-  //   for (const key in this.relatorio) {
-  //     if (Object.prototype.hasOwnProperty.call(this.relatorio, key)) {
-  //       const element = this.relatorio[key];
-  //       this.relatorio = element
-        
-  //     }
-  //   }
-  // }
 }

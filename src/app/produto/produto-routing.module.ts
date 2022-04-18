@@ -6,6 +6,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { InicioComponent } from './inicio/inicio.component';
 import { RelatorioComponent } from './relatorio/relatorio.component';
+import { ConfigsComponent } from './configs/configs.component';
 
 const routes: Routes = [
   { path: '', component: InicioComponent },
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'home/create', component: CreateComponent },
   { path: 'produto/edit/:idProduto', component: EditComponent },
   { path: 'home/relatorio', component: RelatorioComponent },
+  { path: 'home/configuracao', component: ConfigsComponent },
 ];
 
 @NgModule({
