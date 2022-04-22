@@ -16,7 +16,7 @@ const routes: Routes = [
   { path: 'home/create', component: CreateComponent },
   { path: 'produto/edit/:idProduto', component: EditComponent },
   { path: 'home/relatorio', component: RelatorioComponent },
-  { path: 'home/configuracao', component: ConfigsComponent },
+  { path: 'home/configuracao/:id?', component: ConfigsComponent },
 ];
 
 @NgModule({

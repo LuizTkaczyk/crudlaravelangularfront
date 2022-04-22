@@ -11,16 +11,23 @@ import { Route } from '../../app-const';
 export class ConfigsComponent implements OnInit {
   form: FormGroup;
   taxaJuroVista;
+  taxaJuroDebito;
   taxaJuroPrazo;
-  id;
+  taxaJuroParcela;
+  id = 0;
 
   constructor(private sharedService: SharedService) {}
 
   ngOnInit() {
     this.juros();
     this.sharedService.get(Route.GET_JUROS).subscribe((data) => {
-      this.taxaJuroVista = data.taxaJurosVista;
-      this.taxaJuroPrazo = data.taxaJurosPrazo
+      if(data){
+        this.id = data.id;
+        this.taxaJuroVista = data.taxaJurosVista;
+        this.taxaJuroPrazo = data.taxaJurosPrazo;
+        this.taxaJuroDebito = data.taxaJurosDebito
+        this.taxaJuroParcela = data.taxaJurosParcela;
+      }
     });
   }
 
@@ -28,13 +35,14 @@ export class ConfigsComponent implements OnInit {
     this.form = new FormGroup({
       taxaJurosVista: new FormControl(''),
       taxaJurosPrazo: new FormControl(''),
+      taxaJurosDebito: new FormControl(''),
+      taxaJurosParcela :new FormControl('')
     });
   }
 
   submit() {
     this.sharedService
-      .post(Route.TAXA_JUROS,this.form.value)
+      .update(Route.TAXA_JUROS,this.id,this.form.value)
       .subscribe((data) => {});
-    console.log(this.form.value);
   }
 }

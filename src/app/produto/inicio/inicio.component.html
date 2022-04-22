@@ -3,7 +3,7 @@
   <div class="header">
     <h2>Realizar venda</h2>
     <div class="row ">
-      <div class="col-4">
+      <div class="col-2">
         <div class="form-outline">
           <input #buscarCodigo type="text" class="form-control" placeholder="Insira o código do produto"
             value="995458" />
@@ -20,17 +20,17 @@
     <form [formGroup]="form" (ngSubmit)="buscar()">
 
       <div class="row d-flex justify-content-between">
-        <div class="col-3">
+        <div class="col-2">
           <div class="form-outline">
             <label class="form-label" for="nome">Nome</label>
-            <input formControlName="nome" readonly type="text" class="form-control" #testeAdd>
+            <input formControlName="nome" readonly type="text" class="form-control">
           </div>
         </div>
+        
         <div class="col-2">
-
           <div class="form-outline">
             <label class="form-label" for="precoVenda">Valor de venda</label>
-            <input formControlName="precoVenda" readonly type="text" class="form-control" [(ngModel)]="this.valorVenda"
+            <input  formControlName="precoVenda" readonly type="text" class="inputs form-control" [(ngModel)]="this.valorVenda"
               [value]="this.valorVenda | currency:'BRL'" />
           </div>
         </div>
@@ -40,7 +40,7 @@
             <label class="form-label" for="quantidade">Quantidade</label><span *ngIf="this.isSearch">( {{this.estoque}}
               em
               estoque)</span>
-            <input formControlName="quantidade" type="number" class="form-control" min="1" [defaultValue]="1"
+            <input formControlName="quantidade" type="number" class="inputs form-control" min="1" [defaultValue]="1"
               [(ngModel)]="this.quantidade" [max]="this.estoque" />
 
             <div *ngIf="f.quantidade.touched && f.quantidade.invalid" class="alert alert-danger">
@@ -55,7 +55,7 @@
           <!-- Name input -->
           <div class="form-outline">
             <label class="form-label" for="desconto">Desconto %</label>
-            <input #desconto type="number" class="form-control" formControlName="desconto" min="0" max="100"
+            <input #desconto type="number" class="inputs form-control" formControlName="desconto" min="0" max="100"
               [(ngModel)]="this.descontoP" />
           </div>
         </div>
@@ -64,9 +64,18 @@
           <!-- Name input -->
           <div class="form-outline">
             <label class="form-label" for="precoComDesconto">Valor total com desconto</label>
-            <input [(ngModel)]="this.valorDesconto" readonly type="text" class="form-control"
+            <input [(ngModel)]="this.valorDesconto" readonly type="text" class="inputs form-control"
               formControlName="precoComDesconto"
               [value]="this.quantidade*this.valorVenda - ((this.quantidade * this.valorVenda) * (this.descontoP/100)) | currency:'BRL'" />
+          </div>
+        </div>
+
+        <div class="col-2">
+          <!-- Name input -->
+          <div class="form-outline">
+            <label class="form-label" for="precoSemDesconto">Valor total sem desconto</label>
+            <input [(ngModel)]="this.precoFinal" readonly type="text" class="inputs form-control"
+              formControlName="precoSemDesconto" [value]="this.totalSemDesc()| currency:'BRL'" />
           </div>
         </div>
 
@@ -74,15 +83,6 @@
       </div>
 
       <div class="row">
-
-        <div class="col-2">
-          <!-- Name input -->
-          <div class="form-outline">
-            <label class="form-label" for="precoSemDesconto">Valor total sem desconto</label>
-            <input [(ngModel)]="this.precoFinal" readonly type="text" class="form-control"
-              formControlName="precoSemDesconto" [value]="this.valorVenda * this.quantidade | currency:'BRL'" />
-          </div>
-        </div>
 
         <div class="col-2">
           <label class="form-label" for="precoSemDesconto">Data da venda</label>
@@ -107,11 +107,11 @@
           <div class="form-outline">
             <label class="form-label" for="precoComDesconto">Código da venda</label>
             <input [ngModelOptions]="{standalone: true}" [(ngModel)]="this.idVenda" readonly type="text"
-              class="form-control" [value]="this.idVenda" />
+              class="inputs form-control" [value]="this.idVenda" />
           </div>
         </div>
 
-        <div class="col-3">
+        <div class="col col-sm-2">
           <div class="form-group">
             <label class="form-label">Forma de pagamento</label>
             <select [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedOptionPagamento" class="custom-select">
@@ -123,21 +123,39 @@
         <div class="col-2" *ngIf="this.selectedOptionPagamento == 'Cartão crédito - à vista'">
           <div class="form-outline">
             <label class="form-label" for="precoVenda">Taxa de juros à vista</label>
-            <input [ngModelOptions]="{standalone: true}" readonly type="text" class="form-control" [(ngModel)]="this.taxaJurosVista" />
+            <input [ngModelOptions]="{standalone: true}" readonly type="text" class="inputs form-control" [(ngModel)]="this.taxaJurosVista" />
           </div>
         </div>
 
         <div class="col-2" *ngIf="this.selectedOptionPagamento == 'Cartão crédito - à prazo'">
           <div class="form-outline">
             <label class="form-label" for="precoVenda">Taxa de juros à prazo</label>
-            <input [ngModelOptions]="{standalone: true}" readonly type="text" class="form-control" [(ngModel)]="this.taxaJurosPrazo" />
+            <input [ngModelOptions]="{standalone: true}" readonly type="text" class="inputs form-control" [(ngModel)]="this.taxaJurosPrazo" />
           </div>
+
+        </div>
+        <div class="col-2" *ngIf="this.selectedOptionPagamento == 'Cartão crédito - à prazo'">
+          <div class="form-outline">
+            <label class="form-label" for="precoVenda">Taxa de juros por parcela</label>
+            <input [ngModelOptions]="{standalone: true}" readonly type="text" class="inputs form-control" [(ngModel)]="this.taxaJurosParcela" />
+          </div>
+
+        </div>
+        <div class="col-2" *ngIf="this.selectedOptionPagamento == 'Cartão crédito - à prazo'">
+          <div class="form-outline">
+            <label class="form-label" for="precoVenda">Número de parcelas</label>
+            <select [ngModelOptions]="{standalone:true}" class="inputs custom-select" [(ngModel)]="this.parcelas">
+            <option *ngFor="let parcelas of this.numParcelas">{{parcelas}}</option>
+          </select>
+          </div>
+          
+
         </div>
 
         <div class="col-2" *ngIf="this.selectedOptionPagamento == 'Cartão débito'">
           <div class="form-outline">
             <label class="form-label" for="precoVenda">Taxa de juros débito</label>
-            <input  readonly type="text" class="form-control" />
+            <input [ngModelOptions]="{standalone: true}" readonly type="text" class="inputs form-control" [(ngModel)]="this.taxaJurosDebito"/>
           </div>
         </div>
 
@@ -162,7 +180,7 @@
           <th scope="col">Desconto %</th>
           <th scope="col">Valor total com desconto</th>
           <th scope="col">Valor total sem desconto</th>
-          <th scope="col">Data da venda</th>
+          <th scope="col">Forma de pagamento</th>
 
         </tr>
       </thead>
@@ -175,7 +193,7 @@
           <td>{{item.desconto}}%</td>
           <td>{{item.valorComDesconto | currency:'BRL'}}</td>
           <td>{{item.valorSemDesconto | currency:'BRL'}}</td>
-          <td>{{item.dataVenda}}</td>
+          <td>{{item.formaPagamento}}</td>
         </tr>
 
       </tbody>
@@ -190,25 +208,16 @@
 
 
       <div class="col-sm-10">
-        <button class="btn btn-primary" (click)="finalizar()" [disabled]="this.lista.length <= 0 ">Finalizar</button>
-        <!-- <button class="btn btn-primary" (click)="teste()">teste</button> -->
+        <!-- <button class="btn btn-primary" (click)="finalizar()" [disabled]="this.lista.length <= 0 ">Finalizar</button> -->
+        <button class="btn btn-primary" (click)="teste()">teste</button>
       </div>
 
     </div>
     <div class="form-group row">
 
       <div class="form-outline">
-        <label class="form-label" for="precoVenda">Total com desconto</label>
-        <input readonly type="text" class="form-control" [value]="this.totalComDesconto| currency:'BRL'" />
-      </div>
-
-    </div>
-
-    <div class="form-group row">
-
-      <div class="form-outline">
-        <label class="form-label" for="precoVenda">Total sem desconto</label>
-        <input readonly type="text" class="form-control" [value]="this.totalSemDesconto| currency:'BRL'" />
+        <label class="form-label" >Total com desconto</label>
+        <input readonly type="text" class="inputs form-control" [value]="this.totalComDesconto| currency:'BRL'" />
       </div>
 
     </div>
@@ -216,8 +225,17 @@
     <div class="form-group row">
 
       <div class="form-outline">
-        <label class="form-label" for="precoVenda">Total de desconto</label>
-        <input readonly type="text" class="form-control" [value]="this.totalDesconto| currency:'BRL'" />
+        <label class="form-label" >Total sem desconto</label>
+        <input readonly type="text" class="inputs form-control" [value]="this.totalSemDesconto| currency:'BRL'" />
+      </div>
+
+    </div>
+
+    <div class="form-group row">
+
+      <div class="form-outline">
+        <label class="form-label" >Total de desconto</label>
+        <input readonly type="text" class="inputs form-control" [value]="this.totalDesconto| currency:'BRL'" />
       </div>
 
     </div>

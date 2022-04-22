@@ -22,12 +22,21 @@
           <input formControlName="taxaJuros" type="number" class="form-control" [(ngModel)]="this.taxaJuro" min="0">
        
       </div> -->
+      <h2>Taxas dos cartões</h2>
 
       <div class="col-2">
         <!-- Name input -->
         <label class="form-label" for="desconto">Taxa de juros do cartão à vista</label>
         <div class="form-outline">
-          <input formControlName="taxaJurosVista" type="number" class="form-control" [(ngModel)]="this.taxaJuroVista" min="0">
+          <input formControlName="taxaJurosVista" type="number" class="inputs form-control" [(ngModel)]="this.taxaJuroVista" min="0">
+        </div>
+      </div>
+
+      <div class="col-2">
+        <!-- Name input -->
+        <label class="form-label" for="desconto">Taxa de juros do cartão de débito</label>
+        <div class="form-outline">
+          <input formControlName="taxaJurosDebito" type="number" class="inputs form-control" [(ngModel)]="this.taxaJuroDebito" min="0">
         </div>
       </div>
 
@@ -35,9 +44,18 @@
         <!-- Name input -->
         <label class="form-label" for="desconto">Taxa de juros do cartão à prazo</label>
         <div class="form-outline">
-          <input formControlName="taxaJurosPrazo" type="number" class="form-control" [(ngModel)]="this.taxaJuroPrazo" min="0">
+          <input formControlName="taxaJurosPrazo" type="number" class="inputs form-control" [(ngModel)]="this.taxaJuroPrazo" min="0">
         </div>
       </div>
+
+      <div class="col-2">
+        <!-- Name input -->
+        <label class="form-label" for="desconto">Taxa de juros do cartão à prazo por parcela</label>
+        <div class="form-outline">
+          <input formControlName="taxaJurosParcela" type="number" class="inputs form-control" [(ngModel)]="this.taxaJuroParcela" min="0">
+        </div>
+      </div>
+
 
 
     </div>

@@ -38,23 +38,27 @@ export class InicioComponent implements OnInit {
   id;
   taxaJurosVista;
   taxaJurosPrazo;
+  taxaJurosDebito;
+  taxaJurosParcela;
+  parcelas = 1;
+  valor;
 
   // adicionar debito!!!!!!!!
   selectedOptionPagamento = 'Dinheiro';
   formasPagamento = [
-    {name:'Dinheiro', value:1},
-    {name:'Cartão crédito - à vista', value:2},
-    {name:'Cartão crédito - à prazo', value:3},
-    {name:'Cartão débito', value:4},
-    {name:'PIX', value:5},
-    {name:'Outro',value:6}
-  ]
+    { name: 'Dinheiro', value: 1 },
+    { name: 'PIX', value: 2 },
+    { name: 'Cartão débito', value: 3 },
+    { name: 'Cartão crédito - à vista', value: 4 },
+    { name: 'Cartão crédito - à prazo', value: 5 },
+  ];
+
+  numParcelas = [1,2,3,4,5,6,7,8,9,10,11,12]
 
   constructor(
     private ngbCalendar: NgbCalendar,
     private dateAdapter: NgbDateAdapter<string>,
-    private sharedService: SharedService,
-   
+    private sharedService: SharedService
   ) {}
 
   ngOnInit() {
@@ -63,18 +67,21 @@ export class InicioComponent implements OnInit {
     this.geraCodVenda();
     this.getTaxaJurosCartao();
   }
-  
-  geraCodVenda(){
-    this.sharedService.get(Route.CODIGO_VENDA, null).subscribe((data)=>{
-      this.idVenda = data
-    })
+
+  geraCodVenda() {
+    this.sharedService.get(Route.CODIGO_VENDA, null).subscribe((data) => {
+      this.idVenda = data;
+    });
   }
 
-  getTaxaJurosCartao(){
-    this.sharedService.get(Route.GET_JUROS).subscribe((data)=>{
-      this.taxaJurosVista = data.taxaJurosVista + " %";
-      this.taxaJurosPrazo = data.taxaJurosPrazo + " %";
-    })
+  getTaxaJurosCartao() {
+    this.sharedService.get(Route.GET_JUROS).subscribe((data) => {
+      this.taxaJurosVista = data.taxaJurosVista;
+      this.taxaJurosPrazo = data.taxaJurosPrazo;
+      this.taxaJurosDebito = data.taxaJurosDebito;
+      this.taxaJurosParcela = data.taxaJurosParcela;
+      
+    });
   }
 
   formulario() {
@@ -86,7 +93,7 @@ export class InicioComponent implements OnInit {
       precoComDesconto: new FormControl(''),
       precoSemDesconto: new FormControl(''),
       dataVenda: new FormControl('', [Validators.required]),
-      codVenda:new FormControl('')
+      codVenda: new FormControl(''),
     });
   }
 
@@ -100,14 +107,14 @@ export class InicioComponent implements OnInit {
 
   buscar() {
     let codigo = this.buscarCodigo.nativeElement.value;
-    this.sharedService.find(Route.BUSCA_PRODUTO, codigo).subscribe((data)=>{
+    this.sharedService.find(Route.BUSCA_PRODUTO, codigo).subscribe((data) => {
       this.form.get('nome').setValue(data.nome);
       this.form.get('precoVenda').setValue(data.valorVenda);
       this.estoque = data.quantidade;
       this.id = data.id;
       this.form.get('precoComDesconto').setValue(data.valorVenda);
       this.form.get('precoSemDesconto').setValue(data.valorVenda);
-    })
+    });
     if (codigo) {
       this.isSearch = true;
     } else {
@@ -119,7 +126,6 @@ export class InicioComponent implements OnInit {
     this.calculosFinais();
     this.addProdutosLista();
     this.subQuantidade();
-    console.log(this.id)
 
     this.buscarCodigo.nativeElement.value = '';
     this.form.reset();
@@ -128,29 +134,48 @@ export class InicioComponent implements OnInit {
     this.model = this.today;
   }
 
-  subQuantidade(){
-    let quantidade = ({
-      produtoId:this.id,
-      quantidadeVendida:this.form.get('quantidade').value
-    })
-   
+  subQuantidade() {
+    let quantidade = {
+      produtoId: this.id,
+      quantidadeVendida: this.form.get('quantidade').value,
+    };
 
-    this.sharedService.post(Route.REMOVE_ESTOQUE, quantidade).subscribe((res:any)=>{})
+    this.sharedService
+      .post(Route.REMOVE_ESTOQUE, quantidade)
+      .subscribe((res: any) => {});
   }
 
-  calculosFinais(){
-    //soma dos valores com desconto
-    this.somaValorComDesconto.push(this.quantidade * this.valorVenda - this.quantidade * this.valorVenda * (this.descontoP / 100));
-    this.totalComDesconto = this.somaValorComDesconto.reduce((a, b) => (a + b));
-    
-    //soma dos valores sem desconto
-    this.somaValorSemDesconto.push(Number(this.valorVenda * this.quantidade))
-    this.totalSemDesconto = this.somaValorSemDesconto.reduce((a, b) => (a + b));
+  calculosFinais() {
+    if(this.selectedOptionPagamento == 'Dinheiro' || this.selectedOptionPagamento == 'PIX'){
+      
+      //soma dos valores com desconto
+      this.somaValorComDesconto.push(this.quantidade * this.valorVenda -this.quantidade * this.valorVenda * (this.descontoP / 100));
+      this.totalComDesconto = this.somaValorComDesconto.reduce((a, b) => a + b);
+  
+      //soma dos valores sem desconto
+      this.somaValorSemDesconto.push(Number(this.valorVenda * this.quantidade));
+      this.totalSemDesconto = this.somaValorSemDesconto.reduce((a, b) => a + b);
+  
+      this.totalDesconto = this.totalSemDesconto - this.totalComDesconto;
 
-    this.totalDesconto = this.totalSemDesconto - this.totalComDesconto;
+    }else if(this.selectedOptionPagamento == 'Cartão crédito - à vista'){
+       this.somaValorComDesconto.push(this.quantidade * this.valorVenda -this.quantidade * this.valorVenda * (this.descontoP / 100));
+      this.totalComDesconto = this.somaValorComDesconto.reduce((a, b) => a + b) - this.taxaJurosVista;
+  
+      //soma dos valores sem desconto
+      this.somaValorSemDesconto.push(Number(this.valorVenda * this.quantidade));
+      this.totalSemDesconto = this.somaValorSemDesconto.reduce((a, b) => a + b) - this.taxaJurosVista;
+  
+      this.totalDesconto = this.totalSemDesconto - this.totalComDesconto;
+
+    }else if(this.selectedOptionPagamento == 'Cartão crédito - à prazo'){
+     
+    }else if(this.selectedOptionPagamento == 'Cartão débito'){
+     
+    }
   }
 
-  addProdutosLista(){
+  addProdutosLista() {
     this.lista.push({
       codigo: this.buscarCodigo.nativeElement.value,
       nome: this.form.get('nome').value,
@@ -161,29 +186,80 @@ export class InicioComponent implements OnInit {
         this.quantidade * this.valorVenda -
         this.quantidade * this.valorVenda * (this.descontoP / 100),
       valorSemDesconto: this.valorVenda * this.quantidade,
-      dataVenda:this.model['day'] +'/' +this.model['month'] +'/' +this.model['year'],
+      dataVenda:
+        this.model['day'] +
+        '/' +
+        this.model['month'] +
+        '/' +
+        this.model['year'],
       totalComDesconto: this.totalComDesconto,
-      totalSemDesconto:this.totalSemDesconto,
-      totalDesconto:this.totalDesconto,
-      idVenda:this.idVenda,
-      formaPagamento:this.selectedOptionPagamento
-
+      totalSemDesconto: this.totalSemDesconto,
+      totalDesconto: this.totalDesconto,
+      idVenda: this.idVenda,
+      formaPagamento: this.selectedOptionPagamento,
     });
   }
 
   finalizar() {
     this.geraCodVenda();
-    if(this.lista.length > 0){
-      this.sharedService.post(Route.VENDAS,this.lista).subscribe((res: any) => {
-      });
-    }else{
-      return
+    if (this.lista.length > 0) {
+      this.sharedService
+        .post(Route.VENDAS, this.lista)
+        .subscribe((res: any) => {});
     }
-    console.log(this.lista)
-    this.lista = [];
+    this.resetaTotais();
+
   }
 
-  // teste(){
-  //   console.log(this.selectedOptionPagamento)
-  // }
+  resetaTotais(){
+    this.lista = [];
+    this.somaValorSemDesconto = [];
+    this.somaValorComDesconto = [];
+    this.totalDesconto = '';
+    this.totalComDesconto = '';
+    this.totalSemDesconto = '';
+    this.totalDesconto = '';
+  }
+  
+  totalSemDesc(){
+    if(this.selectedOptionPagamento == 'Dinheiro' || this.selectedOptionPagamento == 'PIX'){
+     this.valor = this.valorVenda * this.quantidade;
+      
+      
+    }else if(this.selectedOptionPagamento == 'Cartão crédito - à vista'){
+      let total = (this.valorVenda * this.quantidade);
+      let desconto = total * (this.taxaJurosVista/100);
+      this.valor = total - desconto
+      
+    }else if(this.selectedOptionPagamento == 'Cartão crédito - à prazo'){
+      // let taxaPorcentagem = this.taxaJurosParcela/100
+      // let taxaParcela = (1+taxaPorcentagem);
+      // console.log(taxaParcela);
+
+      // this.valor = this.valorVenda * this.quantidade;
+      
+    }else if(this.selectedOptionPagamento == 'Cartão débito'){
+       let total = (this.valorVenda * this.quantidade);
+      let desconto = total * (this.taxaJurosDebito/100);
+      this.valor = total - desconto
+      
+    }
+    return this.valor
+  }
+
+  teste(){
+    let valorComTaxa = this.precoFinal - (this.precoFinal*(this.taxaJurosPrazo/100))
+
+    let valorParcela = this.precoFinal / this.parcelas; //valor por parcela
+    
+    let taxaPorcentagem = this.taxaJurosParcela/100 //taxa de porcentagem
+
+    let taxaParcela = Math.pow((1+taxaPorcentagem), this.parcelas); //taxa com o montante calculado
+    
+    let parcelaJuros = valorParcela / taxaParcela;
+
+
+
+    console.log(taxaParcela);
+  }
 }

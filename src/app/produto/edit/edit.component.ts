@@ -45,7 +45,6 @@ export class EditComponent implements OnInit {
     this.valorTotalCompra = valor * this.form.value.quantidade;
     this.valorVenda = ((Number(this.form.value.lucro)/100) * valor ) + valor;
     this.valorTotalVenda = (Number(this.form.value.quantidade) * valor) * Number(this.form.value.lucro/100) + Number(this.valorTotalCompra)
-    console.log(this.valorTotalCompra)
 
   }
 

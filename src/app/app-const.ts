@@ -10,7 +10,7 @@ export class Route {
     static BUSCA_PRODUTO = 'busca-produto/';
     static CODIGO_VENDA = 'codigo-venda';
     static RELATORIOS = 'relatorios';
-    static TAXA_JUROS = 'adiciona-juros';
+    static TAXA_JUROS = 'adiciona-juros/';
     static GET_JUROS= 'juros';
    
 }

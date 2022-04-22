@@ -23,7 +23,7 @@
                 <th scope="col">Desconto %</th>
                 <th scope="col">Valor total com desconto</th>
                 <th scope="col">Valor total sem desconto</th>
-                <th scope="col">Data da venda</th>
+                <th scope="col">Forma de pagamento</th>
 
               </tr>
             </thead>
@@ -37,7 +37,7 @@
                 <td>{{item.value[i].desconto}}%</td>
                 <td>{{item.value[i].valorComDesconto | currency:'BRL'}}</td>
                 <td>{{item.value[i].valorSemDesconto | currency:'BRL'}}</td>
-                <td>{{item.value[i].dataVenda}}</td>
+                <td>{{item.value[i].formaPagamento}}</td>
               </tr>
 
             </tbody>
