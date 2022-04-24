@@ -1,12 +1,18 @@
 <div class="containers">
-
+  
   <div class="header">
+    <form [formGroup]="form" (ngSubmit)="buscar()">
+
     <h2>Realizar venda</h2>
     <div class="row ">
       <div class="col-2">
         <div class="form-outline">
-          <input #buscarCodigo type="text" class="form-control" placeholder="Insira o código do produto"
-            value="995458" />
+          <input #buscarCodigo type="text"  class="form-control" placeholder="Insira o código do produto" value="995458" />
+          
+          <div *ngIf="this.errorBusca == true" class="alert alert-danger">
+            <div >*Código inválido ou não encontrado!.</div>
+          </div>
+
         </div>
       </div>
 
@@ -17,7 +23,6 @@
       </div>
     </div>
 
-    <form [formGroup]="form" (ngSubmit)="buscar()">
 
       <div class="row d-flex justify-content-between">
         <div class="col-2">
@@ -66,7 +71,7 @@
             <label class="form-label" for="precoComDesconto">Valor total com desconto</label>
             <input [(ngModel)]="this.valorDesconto" readonly type="text" class="inputs form-control"
               formControlName="precoComDesconto"
-              [value]="this.quantidade*this.valorVenda - ((this.quantidade * this.valorVenda) * (this.descontoP/100)) | currency:'BRL'" />
+              [value]="this.quantidade * this.totalComDesc()| currency:'BRL'" />
           </div>
         </div>
 
@@ -75,7 +80,7 @@
           <div class="form-outline">
             <label class="form-label" for="precoSemDesconto">Valor total sem desconto</label>
             <input [(ngModel)]="this.precoFinal" readonly type="text" class="inputs form-control"
-              formControlName="precoSemDesconto" [value]="this.totalSemDesc()| currency:'BRL'" />
+              formControlName="precoSemDesconto" [value]="this.quantidade * totalSemDesc()| currency:'BRL'" />
           </div>
         </div>
 
@@ -181,11 +186,12 @@
           <th scope="col">Valor total com desconto</th>
           <th scope="col">Valor total sem desconto</th>
           <th scope="col">Forma de pagamento</th>
+          <th scope="col">Remover da lista</th>
 
         </tr>
       </thead>
-      <tbody>
-        <tr *ngFor="let item of lista">
+      <tbody  >
+        <tr *ngFor="let item of lista;let i=index">
           <td>{{item.codigo}}</td>
           <td>{{item.nome}}</td>
           <td>{{item.valorVenda | currency:'BRL'}}</td>
@@ -194,6 +200,7 @@
           <td>{{item.valorComDesconto | currency:'BRL'}}</td>
           <td>{{item.valorSemDesconto | currency:'BRL'}}</td>
           <td>{{item.formaPagamento}}</td>
+          <td class="text-center"><a type="button" (click)="deleteList(i, item)"> <mat-icon>remove_circle</mat-icon>  </a></td>
         </tr>
 
       </tbody>
@@ -208,8 +215,16 @@
 
 
       <div class="col-sm-10">
-        <!-- <button class="btn btn-primary" (click)="finalizar()" [disabled]="this.lista.length <= 0 ">Finalizar</button> -->
-        <button class="btn btn-primary" (click)="teste()">teste</button>
+        <button class="btn btn-primary" (click)="finalizar()" [disabled]="this.lista.length <= 0 ">Finalizar</button>
+        <!-- <button class="btn btn-primary" (click)="teste()">teste</button> -->
+      </div>
+
+    </div>
+    <div class="form-group row">
+
+      <div class="form-outline">
+        <label class="form-label" >Total sem desconto</label>
+        <input readonly type="text" class="inputs form-control" [value]="this.totalSemDesconto| currency:'BRL'" />
       </div>
 
     </div>
@@ -222,14 +237,6 @@
 
     </div>
 
-    <div class="form-group row">
-
-      <div class="form-outline">
-        <label class="form-label" >Total sem desconto</label>
-        <input readonly type="text" class="inputs form-control" [value]="this.totalSemDesconto| currency:'BRL'" />
-      </div>
-
-    </div>
 
     <div class="form-group row">
 
