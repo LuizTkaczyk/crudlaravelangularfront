@@ -17,6 +17,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { HomeComponent } from './produto/home/home.component';
 import { CustomDateFormat } from './produto/dateFormatInicio/CustomDateFormat';
 
+
 @NgModule({
   declarations: [AppComponent, HomeComponent],
   imports: [

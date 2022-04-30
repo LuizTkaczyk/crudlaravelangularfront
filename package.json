@@ -28,6 +28,7 @@
     "ng-bootstrap-icons": "^13.1.2-canary.1",
     "ng2-search-filter": "^0.5.1",
     "ngx-bootstrap": "^8.0.0",
+    "ngx-mask": "^13.1.12",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"

@@ -70,7 +70,7 @@ export class IndexComponent implements OnInit {
   }
 
   getAll(){
-    this.sharedService.get(Route.TODOS_PRODUTOS, null).subscribe((data :Produto[]) => {
+    this.sharedService.get(Route.TODOS_PRODUTOS).subscribe((data :Produto[]) => {
       this.searchProdutos = data
       //console.log(this.searchProdutos)
     })

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Pipe, AfterContentChecked, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
+import {Component,OnInit,ViewChild,ElementRef,Pipe,AfterContentChecked,ChangeDetectorRef} from '@angular/core';
 import { NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import { NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { Produto } from '../produto';
@@ -12,7 +12,7 @@ import { Route } from '../../app-const';
   templateUrl: './inicio.component.html',
   styleUrls: ['./inicio.component.css'],
 })
-export class InicioComponent implements OnInit,AfterContentChecked {
+export class InicioComponent implements OnInit, AfterContentChecked {
   @ViewChild('buscarCodigo') buscarCodigo: ElementRef;
   @ViewChild('desconto') desconto: ElementRef;
   @ViewChild('data') data: ElementRef;
@@ -24,10 +24,10 @@ export class InicioComponent implements OnInit,AfterContentChecked {
   isSearch: boolean = false;
   lista: any[] = [];
   valorVenda = 0;
-  valorDesconto;
+  valorDesconto = 0;
   quantidade = 1;
   descontoP = 0;
-  precoFinal;
+  precoFinal = 0;
   dataVenda;
   somaValorComDesconto = [];
   somaValorSemDesconto = [];
@@ -43,7 +43,7 @@ export class InicioComponent implements OnInit,AfterContentChecked {
   taxaJurosParcela;
   parcelas = 2;
   valor;
-  errorBusca = false
+  errorBusca = false;
 
   // adicionar debito!!!!!!!!
   selectedOptionPagamento = 'Dinheiro';
@@ -55,7 +55,13 @@ export class InicioComponent implements OnInit,AfterContentChecked {
     { name: 'Cartão crédito - à prazo', value: 5 },
   ];
 
-  numParcelas = [2,3,4,5,6,7,8,9,10,11,12]
+  numParcelas = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+
+   //adiciona os produtos removidos da lista em um array, apos faz a soma dos valores deste array e subtrai do valor total
+   addProdutosDeletadosSemDes = [];
+   somaProdutosDeletadosSemDes = 0;
+   addProdutosDeletadosComDes = [];
+   somaProdutosDeletadosComDes = 0;
 
   constructor(
     private ngbCalendar: NgbCalendar,
@@ -70,12 +76,13 @@ export class InicioComponent implements OnInit,AfterContentChecked {
     this.geraCodVenda();
     this.getTaxaJurosCartao();
   }
+
   ngAfterContentChecked() {
     this.ref.detectChanges();
-}
+  }
 
   geraCodVenda() {
-    this.sharedService.get(Route.CODIGO_VENDA, null).subscribe((data) => {
+    this.sharedService.get(Route.CODIGO_VENDA).subscribe((data) => {
       this.idVenda = data;
     });
   }
@@ -86,7 +93,6 @@ export class InicioComponent implements OnInit,AfterContentChecked {
       this.taxaJurosPrazo = data.taxaJurosPrazo;
       this.taxaJurosDebito = data.taxaJurosDebito;
       this.taxaJurosParcela = data.taxaJurosParcela;
-      
     });
   }
 
@@ -99,8 +105,6 @@ export class InicioComponent implements OnInit,AfterContentChecked {
       precoComDesconto: new FormControl(''),
       precoSemDesconto: new FormControl(''),
       dataVenda: new FormControl('', [Validators.required]),
-      //codVenda: new FormControl('', [Validators.required]),
-
     });
   }
 
@@ -114,12 +118,12 @@ export class InicioComponent implements OnInit,AfterContentChecked {
 
   buscar() {
     let codigo = this.buscarCodigo.nativeElement.value;
-    if(!codigo){
+    if (!codigo) {
       this.errorBusca = true;
-    }else{
-      this.errorBusca = false
+    } else {
+      this.errorBusca = false;
       this.sharedService.find(Route.BUSCA_PRODUTO, codigo).subscribe((data) => {
-        if(Object.values(data).length == 0){
+        if (Object.values(data).length == 0) {
           this.errorBusca = true;
         }
         this.form.get('nome').setValue(data.nome);
@@ -134,15 +138,14 @@ export class InicioComponent implements OnInit,AfterContentChecked {
       } else {
         return;
       }
-
     }
   }
 
+  //adiciona produtos a listagem de produtos vendidos
   adicionar(item: any) {
     this.calculosFinais();
     this.addProdutosLista();
     this.subQuantidade();
-
     this.buscarCodigo.nativeElement.value = '';
     this.form.reset();
     this.form.get('quantidade').setValue(1);
@@ -150,6 +153,7 @@ export class InicioComponent implements OnInit,AfterContentChecked {
     this.model = this.today;
   }
 
+  //subtrai a quantidade em estoque diretamento do banco de dados
   subQuantidade() {
     let quantidade = {
       produtoId: this.id,
@@ -161,20 +165,24 @@ export class InicioComponent implements OnInit,AfterContentChecked {
       .subscribe((res: any) => {});
   }
 
+  //Faz os calculos finais, apos clicar no botão adicionar
   calculosFinais() {
     //soma dos valores sem desconto
     this.somaValorSemDesconto.push(this.quantidade * this.totalSemDesc());
     this.totalSemDesconto = this.somaValorSemDesconto.reduce((a, b) => a + b);
-
+    this.totalSemDesconto -= this.somaProdutosDeletadosSemDes;
+ 
     //soma dos valores com desconto
     this.somaValorComDesconto.push(this.quantidade * this.totalComDesc());
     this.totalComDesconto = this.somaValorComDesconto.reduce((a, b) => a + b);
-  
+    this.totalComDesconto -= this.somaProdutosDeletadosComDes;
+
     //total somente de descontos
     this.totalDesconto = this.totalSemDesconto - this.totalComDesconto;
-   
   }
 
+  
+  //adiciona os produtos vendidos a uma lista q será salva no banco de dados
   addProdutosLista() {
     this.lista.push({
       codigo: this.buscarCodigo.nativeElement.value,
@@ -182,8 +190,8 @@ export class InicioComponent implements OnInit,AfterContentChecked {
       valorVenda: this.form.get('precoVenda').value,
       quantidade: this.quantidade,
       desconto: this.descontoP,
-      valorComDesconto:(this.quantidade * this.totalComDesc()).toFixed(2),
-      valorSemDesconto:(this.quantidade * this.totalSemDesc()).toFixed(2),
+      valorComDesconto: (this.quantidade * this.valor).toFixed(2),
+      valorSemDesconto: (this.quantidade * this.totalSemDesc()).toFixed(2),
       dataVenda:
         this.model['day'] +
         '/' +
@@ -195,6 +203,8 @@ export class InicioComponent implements OnInit,AfterContentChecked {
       totalDesconto: Number(this.totalDesconto).toFixed(2),
       idVenda: this.idVenda,
       formaPagamento: this.selectedOptionPagamento,
+      codRelatorio: this.model['day']+''+this.model['month']+''+this.model['year'],
+      tipoJuros:3
     });
   }
 
@@ -206,10 +216,9 @@ export class InicioComponent implements OnInit,AfterContentChecked {
         .subscribe((res: any) => {});
     }
     this.resetaTotais();
-
   }
 
-  resetaTotais(){
+  resetaTotais() {
     this.lista = [];
     this.somaValorSemDesconto = [];
     this.somaValorComDesconto = [];
@@ -218,50 +227,63 @@ export class InicioComponent implements OnInit,AfterContentChecked {
     this.totalSemDesconto = '';
     this.totalDesconto = '';
   }
-  
-  totalSemDesc(){
-   
-    if(this.selectedOptionPagamento == 'Dinheiro' || this.selectedOptionPagamento == 'PIX'){
-      return this.valor = this.valorVenda;
-      
-      
-    }else if(this.selectedOptionPagamento == 'Cartão crédito - à vista'){
-      let total =this.valorVenda;
-      let taxaInter = total * (this.taxaJurosVista/100);
-      return this.valor = total - taxaInter
-      
-    }else if(this.selectedOptionPagamento == 'Cartão crédito - à prazo'){
+
+  totalSemDesc() {
+    if (
+      this.selectedOptionPagamento == 'Dinheiro' ||
+      this.selectedOptionPagamento == 'PIX'
+    ) {
+      return (this.valor = this.valorVenda);
+    } else if (this.selectedOptionPagamento == 'Cartão crédito - à vista') {
       let total = this.valorVenda;
-      let taxaInter = total * (this.taxaJurosPrazo/100) //taxa de intermediação
+      let taxaInter = total * (this.taxaJurosVista / 100);
+      return (this.valor = total - taxaInter);
+    } else if (this.selectedOptionPagamento == 'Cartão crédito - à prazo') {
+      let total = this.valorVenda;
+      let taxaInter = total * (this.taxaJurosPrazo / 100); //taxa de intermediação
       let valorParcela = this.precoFinal / this.parcelas; //valor por parcela
-      let valorFinal= [];
-      for (let index = 0; index < this.parcelas; index++){
-        let taxaPorcentagem = this.taxaJurosParcela/100;
-        valorFinal.push(valorParcela / (Math.pow((1+(taxaPorcentagem)),index+1)));
+      let valorFinal = [];
+      for (let index = 0; index < this.parcelas; index++) {
+        let taxaPorcentagem = this.taxaJurosParcela / 100;
+        valorFinal.push(
+          valorParcela / Math.pow(1 + taxaPorcentagem, index + 1)
+        );
       }
 
       let valor = valorFinal.reduce((soma, valor) => soma + valor);
-      return this.valor =  valor - taxaInter;
-
-    }else if(this.selectedOptionPagamento == 'Cartão débito'){
+      return (this.valor = valor - taxaInter);
+    } else if (this.selectedOptionPagamento == 'Cartão débito') {
       let total = this.valorVenda;
-      let taxaInter = total * (this.taxaJurosDebito/100);
-      return this.valor = total - taxaInter
-      
+      let taxaInter = total * (this.taxaJurosDebito / 100);
+      return (this.valor = total - taxaInter);
     }
     return null;
   }
 
-  totalComDesc(){
-    this.valor = this.valor - ((this.valor) * (this.descontoP/100));
-    return  this.valor;
+  totalComDesc() {
+    let desconto;
+    desconto = this.valor * (this.descontoP / 100);
+    this.valor = this.valor - desconto;
+    return this.valor;
   }
 
-  deleteList(index:number, data){
-    this.lista.splice(index,1);
+  restore(idProduto){
+    this.sharedService.find(Route.RESTAURAR, idProduto).subscribe((data)=>{})
+  }
+
+ 
+  //adiciona os produtos removidos da lista em um array, apos faz a soma dos valores deste array e subtrai do valor total
+  deleteList(index: number, data) {
+    console.log(data)
+    this.lista.splice(index, 1);
+
+    this.addProdutosDeletadosSemDes.push(Number(data.valorSemDesconto))
+    this.somaProdutosDeletadosSemDes = this.addProdutosDeletadosSemDes.reduce((a,b) => a + b);
+
+    this.addProdutosDeletadosComDes.push(Number(data.valorComDesconto))
+    this.somaProdutosDeletadosComDes = this.addProdutosDeletadosComDes.reduce((a,b) => a + b);
   
-    //console.log(this.totalSemDesconto)
-    //console.log(data.totalComDesconto, data.totalSemDesconto, data.totalDesconto)
-  
+    this.restore(data.codigo);
+    this.calculosFinais();
   }
 }

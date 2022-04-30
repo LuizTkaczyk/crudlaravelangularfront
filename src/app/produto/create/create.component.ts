@@ -51,7 +51,7 @@ export class CreateComponent implements OnInit {
   }
 
   randomCode() {
-    this.codProduto = Math.floor(100000 + Math.random() * 900000);
+    this.codProduto = Math.floor(100000 + Math.random() * 999999);
   }
 
   get f() {

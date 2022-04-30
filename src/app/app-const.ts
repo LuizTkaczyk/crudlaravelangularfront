@@ -12,5 +12,7 @@ export class Route {
     static RELATORIOS = 'relatorios';
     static TAXA_JUROS = 'adiciona-juros/';
     static GET_JUROS= 'juros';
+    static GET_TOTAIS = 'totais/';
+    static RESTAURAR = 'restaurar-produto/'
    
 }

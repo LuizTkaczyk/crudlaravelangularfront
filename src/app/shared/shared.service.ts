@@ -13,7 +13,7 @@ export class SharedService {
 
   // seviço compartilhado que retorna todos os dados do banco de dados
 
-  get(route, id = null): Observable<any> {
+  get(route): Observable<any> {
     return this.httpService.get(this.apiURL +`${route}`);
   }
 

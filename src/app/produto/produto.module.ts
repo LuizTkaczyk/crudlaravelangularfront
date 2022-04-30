@@ -35,6 +35,10 @@ import { CustomDateFormat } from './dateFormatInicio/CustomDateFormat';
 import { RelatorioComponent } from './relatorio/relatorio.component';
 import { ConfigsComponent } from './configs/configs.component';
 
+import { NgxMaskModule, IConfig } from 'ngx-mask'
+
+export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
+
 registerLocaleData(ptBr);
 
 @NgModule({
@@ -69,6 +73,8 @@ registerLocaleData(ptBr);
     MatNativeDateModule,
     MatInputModule,
     NgbModule,
+    ReactiveFormsModule.withConfig({warnOnNgModelWithFormControl: 'never'}), //REMOVE O AVISO DO NGMODEL NO FORM CONTROL
+    NgxMaskModule.forRoot()
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'pt' },

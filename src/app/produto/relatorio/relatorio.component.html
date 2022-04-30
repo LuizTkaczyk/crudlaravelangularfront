@@ -9,7 +9,7 @@
       <ngb-panel *ngFor="let item of this.relatorio | keyvalue:keyDescOrder;let a=index" >
         
         <ng-template ngbPanelHeader>
-          <button ngbPanelToggle class="accordion-button">Data da venda : {{item.key}}</button>
+          <button ngbPanelToggle class="accordion-button" (click)="teste(item.value[0].cod_relatorio)">Relatório do dia: {{item.key}}</button>
         </ng-template>
         
         <ng-template ngbPanelContent >
@@ -38,18 +38,56 @@
                 <td>{{item.value[i].valorComDesconto | currency:'BRL'}}</td>
                 <td>{{item.value[i].valorSemDesconto | currency:'BRL'}}</td>
                 <td>{{item.value[i].formaPagamento}}</td>
+                
               </tr>
 
             </tbody>
            
           </table>
-          <div class="form-group row">
+          <hr>
+          <div class="form-group row justify-content-between">
+            <div class="col-2">
+              <!-- Name input -->
+              <div class="form-outline">
 
-            <div class="form-outline">
-              <label class="form-label" >Total de desconto</label>
-              <input readonly type="text" class="inputs form-control" [value]="50| currency:'BRL'" />
+                  <label class="form-label" for="desconto">Código da venda</label>
+                  <input #teste readonly class="inputs form-control" value={{item.value[0].cod_relatorio}} />
+              
+              </div>
+
             </div>
-      
+
+            <div class="col-2">
+              <!-- Name input -->
+              <div class="form-outline">
+                <label class="form-label" for="desconto">Total sem desconto</label>
+                <input readonly class="inputs form-control" [value]="this.totalSemDesconto | currency:'BRL'"/>
+              </div>
+
+            </div>
+
+            <div class="col-2">
+              <!-- Name input -->
+              <div class="form-outline">
+                <label class="form-label" for="desconto">Total com desconto</label>
+                <input readonly class="inputs form-control" [value]="this.totalComDesconto | currency:'BRL'"/>
+              </div>
+              
+            </div>
+
+            <div class="col-2">
+              <!-- Name input -->
+              <div class="form-outline">
+                <label class="form-label" for="desconto">Total de desconto</label>
+                <input readonly class="inputs form-control" [value]="this.totalDesconto | currency:'BRL'"/>
+              </div>
+              
+            </div>
+            
+            <div class="alert alert-dark mt-2" role="alert">
+              Valores totais já estão com os juros de cartões já descontados!
+            </div>
+           
           </div>
         </ng-template>
 
