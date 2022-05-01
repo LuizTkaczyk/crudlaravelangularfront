@@ -27,3 +27,7 @@
   .inputs{
     width: 70%;
   }
+
+  .alerta{
+    z-index: 1;
+  }

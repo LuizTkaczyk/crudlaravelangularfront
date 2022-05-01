@@ -1,10 +1,11 @@
-import {Component,OnInit,ViewChild,ElementRef,Pipe,AfterContentChecked,ChangeDetectorRef} from '@angular/core';
+import {Component,OnInit,ViewChild,ElementRef,Pipe,AfterContentChecked,ChangeDetectorRef, OnDestroy} from '@angular/core';
 import { NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import { NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { Produto } from '../produto';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { SharedService } from '../../shared/shared.service';
 import { Route } from '../../app-const';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 
 @Component({
@@ -12,11 +13,13 @@ import { Route } from '../../app-const';
   templateUrl: './inicio.component.html',
   styleUrls: ['./inicio.component.css'],
 })
-export class InicioComponent implements OnInit, AfterContentChecked {
+export class InicioComponent implements OnInit, AfterContentChecked, OnDestroy {
   @ViewChild('buscarCodigo') buscarCodigo: ElementRef;
   @ViewChild('desconto') desconto: ElementRef;
   @ViewChild('data') data: ElementRef;
+  @ViewChild('finalizaVenda') finalizaVenda;
 
+  deleteModalRef: BsModalRef;
   public searchText: Produto[] = [];
   model;
   form: FormGroup;
@@ -67,7 +70,8 @@ export class InicioComponent implements OnInit, AfterContentChecked {
     private ngbCalendar: NgbCalendar,
     private dateAdapter: NgbDateAdapter<string>,
     private sharedService: SharedService,
-    private ref: ChangeDetectorRef
+    private ref: ChangeDetectorRef,
+    private modalService: BsModalService,
   ) {}
 
   ngOnInit() {
@@ -75,6 +79,11 @@ export class InicioComponent implements OnInit, AfterContentChecked {
     this.formulario();
     this.geraCodVenda();
     this.getTaxaJurosCartao();
+    this.formatData();
+  }
+  
+  ngOnDestroy(){
+    
   }
 
   ngAfterContentChecked() {
@@ -106,6 +115,22 @@ export class InicioComponent implements OnInit, AfterContentChecked {
       precoSemDesconto: new FormControl(''),
       dataVenda: new FormControl('', [Validators.required]),
     });
+  }
+
+  formatData(){
+    let data;
+    if(this.model['day'] < 10 && this.model['month'] < 10){
+      data = '0'+this.model['day'] +'/0' +this.model['month'] +'/' +this.model['year'];
+    }else if(this.model['day'] < 10){
+      data =  '0'+this.model['day'] +'/' +this.model['month'] +'/' +this.model['year'];
+    }else if(this.model['month'] < 10){
+      data = this.model['day'] +'/0' +this.model['month'] +'/' +this.model['year'];
+    }else{
+      data = this.model['day'] +'/' +this.model['month'] +'/' +this.model['year'];
+
+    }
+
+    return data;
   }
 
   get today() {
@@ -192,12 +217,7 @@ export class InicioComponent implements OnInit, AfterContentChecked {
       desconto: this.descontoP,
       valorComDesconto: (this.quantidade * this.valor).toFixed(2),
       valorSemDesconto: (this.quantidade * this.totalSemDesc()).toFixed(2),
-      dataVenda:
-        this.model['day'] +
-        '/' +
-        this.model['month'] +
-        '/' +
-        this.model['year'],
+      dataVenda:this.formatData(),
       totalComDesconto: Number(this.totalComDesconto).toFixed(2),
       totalSemDesconto: Number(this.totalSemDesconto).toFixed(2),
       totalDesconto: Number(this.totalDesconto).toFixed(2),
@@ -208,16 +228,7 @@ export class InicioComponent implements OnInit, AfterContentChecked {
     });
   }
 
-  finalizar() {
-    this.geraCodVenda();
-    if (this.lista.length > 0) {
-      this.sharedService
-        .post(Route.VENDAS, this.lista)
-        .subscribe((res: any) => {});
-    }
-    this.resetaTotais();
-  }
-
+  
   resetaTotais() {
     this.lista = [];
     this.somaValorSemDesconto = [];
@@ -269,6 +280,7 @@ export class InicioComponent implements OnInit, AfterContentChecked {
 
   restore(idProduto, data){
     this.sharedService.postWithId(Route.RESTAURAR, idProduto, data).subscribe((data)=>{})
+    
   }
 
  
@@ -285,5 +297,33 @@ export class InicioComponent implements OnInit, AfterContentChecked {
   
     this.restore(data.codigo, data);
     this.calculosFinais();
+  }
+
+  finalizar() {
+    this.deleteModalRef = this.modalService.show(this.finalizaVenda, {
+      class: 'modal-sm',
+    });
+   
+  }
+
+  finalizarVenda() {
+    this.geraCodVenda();
+    if (this.lista.length > 0) {
+      this.sharedService
+        .post(Route.VENDAS, this.lista)
+        .subscribe((res: any) => {});
+    }
+    this.resetaTotais();
+
+  }
+
+
+  onConfirmVenda(){
+    this. finalizarVenda();
+    this.deleteModalRef.hide();
+  }
+
+  onDeclineVenda(){
+    this.deleteModalRef.hide();
   }
 }

@@ -33,7 +33,6 @@ export class RelatorioComponent implements OnInit {
 
   getTotais(idRelatorio){
     this.sharedServie.find(Route.GET_TOTAIS, idRelatorio).subscribe((data)=>{
-      console.log(data)
       this.totalComDesconto = data.totalComDesconto;
       this.totalSemDesconto = data.totalSemDesconto;
       this.totalDesconto = data.totalDesconto;
@@ -46,7 +45,6 @@ export class RelatorioComponent implements OnInit {
   }
 
   teste(value){
-   console.log(value)
     this.getTotais(value)
   }
 }

@@ -7,9 +7,9 @@
     <div class="row ">
       <div class="col-2">
         <div class="form-outline">
-          <input #buscarCodigo type="text"  class="form-control" placeholder="Insira o código do produto" value="117069" />
+          <input #buscarCodigo type="text"  class="form-control" placeholder="Insira o código do produto" value="555388" />
           
-          <div *ngIf="this.errorBusca == true" class="alert alert-danger">
+          <div *ngIf="this.errorBusca == true" class="alert alert-danger position-absolute alerta">
             <div >*Código inválido ou não encontrado!.</div>
           </div>
 
@@ -48,7 +48,7 @@
             <input formControlName="quantidade" type="number" class="inputs form-control" min="1" [defaultValue]="1"
               [(ngModel)]="this.quantidade" [max]="this.estoque" />
 
-            <div *ngIf="f.quantidade.touched && f.quantidade.invalid" class="alert alert-danger">
+            <div *ngIf="f.quantidade.touched && f.quantidade.invalid" class="alert alert-danger alerta">
               <div *ngIf="f.quantidade.errors?.['required']">*A quantidade é obrigatória.</div>
               <div *ngIf="f.quantidade.errors">*A quantidade deve ser menor ou igual a quantidade em estoque.</div>
             </div>
@@ -215,6 +215,7 @@
 
 
       <div class="col-sm-10">
+        <label class="form-label"></label>
         <button class="btn btn-primary" (click)="finalizar()" [disabled]="this.lista.length <= 0 ">Finalizar</button>
         <!-- <button class="btn btn-primary" (click)="teste()">teste</button> -->
       </div>
@@ -250,3 +251,11 @@
   </div>
 
 </div>
+
+<ng-template #finalizaVenda>
+  <div class="modal-body text-center">
+    <p>Deseja concluir esta venda ?</p>
+    <button type="button" class="btn btn-danger mr-3" (click)="onConfirmVenda()">Sim</button>
+    <button type="button" class="btn btn-primary" (click)="onDeclineVenda()">Não</button>
+  </div>
+</ng-template>
