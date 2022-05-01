@@ -267,8 +267,8 @@ export class InicioComponent implements OnInit, AfterContentChecked {
     return this.valor;
   }
 
-  restore(idProduto){
-    this.sharedService.find(Route.RESTAURAR, idProduto).subscribe((data)=>{})
+  restore(idProduto, data){
+    this.sharedService.postWithId(Route.RESTAURAR, idProduto, data).subscribe((data)=>{})
   }
 
  
@@ -283,7 +283,7 @@ export class InicioComponent implements OnInit, AfterContentChecked {
     this.addProdutosDeletadosComDes.push(Number(data.valorComDesconto))
     this.somaProdutosDeletadosComDes = this.addProdutosDeletadosComDes.reduce((a,b) => a + b);
   
-    this.restore(data.codigo);
+    this.restore(data.codigo, data);
     this.calculosFinais();
   }
 }

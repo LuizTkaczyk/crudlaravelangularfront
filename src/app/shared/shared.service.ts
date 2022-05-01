@@ -21,6 +21,10 @@ export class SharedService {
     return this.httpService.post(this.apiURL +`${route}`, data);
   }
 
+  postWithId(route, id, data):Observable<any>{
+    return this.httpService.post(this.apiURL +`${route}`+ `${id}`, data);
+  }
+
   update(route, id, data):Observable<any>{
     let routeApi = this.apiURL + route + `${id}`;
     return this.httpService.put(routeApi , data);
