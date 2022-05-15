@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SharedService {
-  apiURL = "http://localhost:8000/api/";
+  apiURL = environment.api;
 
 
   constructor(private httpService: HttpClient) {}

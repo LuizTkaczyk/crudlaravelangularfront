@@ -9,7 +9,7 @@
       <ngb-panel *ngFor="let item of this.relatorio | keyvalue:keyDescOrder;let a=index" >
         
         <ng-template ngbPanelHeader>
-          <button ngbPanelToggle class="accordion-button" (click)="teste(item.value[0].cod_relatorio)">Relatório do dia: {{item.key}}</button>
+          <button ngbPanelToggle class="accordion-button" (click)="openRelatorio(item.value[0].cod_relatorio)">Relatório do dia: {{item.key}}</button>
         </ng-template>
         
         <ng-template ngbPanelContent >
@@ -51,7 +51,7 @@
               <div class="form-outline">
 
                   <label class="form-label" for="desconto">Código da venda</label>
-                  <input #teste readonly class="inputs form-control" value={{item.value[0].cod_relatorio}} />
+                  <input #codVenda readonly class="inputs form-control" value={{item.value[0].cod_relatorio}} />
               
               </div>
 

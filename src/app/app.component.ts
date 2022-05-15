@@ -9,7 +9,11 @@ import { NgForm } from '@angular/forms';
 export class AppComponent {
   title = 'Crud com angular e laravel';
 
-  onSubmit(form:NgForm){
-    //console.log(form.value);
+  showMenu:boolean =false;
+
+  constructor(){}
+
+  ngOnInit(){
+    
   }
 }

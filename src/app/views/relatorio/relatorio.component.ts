@@ -9,7 +9,7 @@ import { KeyValue } from '@angular/common';
   styleUrls: ['./relatorio.component.css']
 })
 export class RelatorioComponent implements OnInit {
-  @ViewChild('teste') codRelatorio: ElementRef
+  @ViewChild('codVenda') codRelatorio: ElementRef
   relatorio;
   objectKeys = Object.keys;
   totalSemDesconto;
@@ -26,8 +26,7 @@ export class RelatorioComponent implements OnInit {
   getRelatorios(){
     this.sharedServie.get(Route.RELATORIOS).subscribe((data)=>{
       this.relatorio = data;
-    
-     
+      console.log(data)
     })
   }
 
@@ -40,11 +39,16 @@ export class RelatorioComponent implements OnInit {
   }
 
   //ordena os produtos de acordo com a data
-  keyDescOrder = (a: KeyValue<any,any>, b: KeyValue<any,any>): number => {
-    return a.key > b.key ? -1 : (b.key > a.key ? 1 : 0);
+  keyDescOrder (){
+    return null
+  
   }
 
-  teste(value){
+  openRelatorio(value){
     this.getTotais(value)
+  }
+
+  teste(){
+    return null;
   }
 }
