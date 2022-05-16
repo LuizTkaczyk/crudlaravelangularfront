@@ -13,6 +13,8 @@ export class Route {
     static TAXA_JUROS = 'adiciona-juros/';
     static GET_JUROS= 'juros';
     static GET_TOTAIS = 'totais/';
-    static RESTAURAR = 'restaurar-produto/'
+    static RESTAURAR = 'restaurar-produto/';
+    static CREATE_USER = 'create-user';
+    static LOGIN = 'auth/login';
    
 }

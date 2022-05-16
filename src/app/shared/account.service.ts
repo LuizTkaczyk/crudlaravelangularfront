@@ -7,17 +7,18 @@ export class AccountService {
 
 constructor() { }
 
-  login(user:any){
-    return new Promise((resolve)=> {
-      window.localStorage.setItem('token', 'meu-token');
-      resolve(true);
-    })
+  login(token){
+    window.localStorage.setItem('token', token);
+  }
+
+  removeToken(){
+    localStorage.removeItem('token');
   }
 
   createAccout(account:any){
-    return new Promise((resolve)=>{
-      resolve(true)
-    })
+    // return new Promise((resolve)=>{
+    //   resolve(true)
+    // })
   }
 
 }

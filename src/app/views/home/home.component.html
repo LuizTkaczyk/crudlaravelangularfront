@@ -6,7 +6,7 @@
     <h4 class="name">Luma modas</h4>
 
     <mat-divider></mat-divider>
-    <a type="button" mat-button class="menu-button" routerLink="" routerLinkActive="menu-button2">
+    <a type="button" mat-button class="menu-button" routerLink="home" routerLinkActive="menu-button2">
       <mat-icon>home</mat-icon>
       <span>Início</span>
     </a>
@@ -31,7 +31,7 @@
     </a>
 
     <mat-divider></mat-divider>
-    <a  type="button" mat-button class="menu-button"  routerLinkActive="menu-button2">
+    <a  type="button" mat-button class="menu-button" (click)="exit()" routerLinkActive="menu-button2">
       <mat-icon>exit_to_app</mat-icon>
       <span>Sair</span>
     </a>
@@ -44,3 +44,11 @@
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
+
+<ng-template #exitApp>
+  <div class="modal-body text-center " >
+    <p>Deseja sair?</p>
+    <button type="button" class="btn btn-danger mr-3" (click)="onConfirmExit()">Sim</button>
+    <button type="button" class="btn btn-primary" (click)="onDeclineExit()">Não</button>
+  </div>
+</ng-template>

@@ -7,14 +7,15 @@
   
               <h3 class="mb-5">Login Luma Moda Feminina</h3>
   
+              <form [formGroup]="form" (ngSubmit)="login()">
               <div class="form-outline mb-4">
-                <input  type="email" id="typeEmailX-2" class="form-control form-control-lg" />
                 <label class="form-label" for="typeEmailX-2">Usuário</label>
+                <input formControlName="name" type="email" id="typeEmailX-2" class="form-control form-control-lg" />
               </div>
   
               <div class="form-outline mb-4">
-                <input  type="password" id="typePasswordX-2" class="form-control form-control-lg" />
                 <label class="form-label" for="typePasswordX-2">Senha</label>
+                <input formControlName="password" type="password" id="typePasswordX-2" class="form-control form-control-lg" />
               </div>
   
               <!-- Checkbox -->
@@ -23,9 +24,9 @@
                 <label class="form-check-label" for="form1Example3"> Remember password </label>
               </div> -->
   
-              <button class="btn btn-primary btn-lg btn-block" (click)="entrar()" type="submit">Entrar</button>
+              <button class="btn btn-primary btn-lg btn-block" type="submit">Entrar</button>
               <button type="button" class="btn btn-primary btn-lg btn-block" [routerLink]="['/create-account']">Criar conta</button>
-  
+            </form>
             </div>
           </div>
         </div>

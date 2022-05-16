@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NgbDateParserFormatter, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ProdutoModule } from './views/produto.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
@@ -18,8 +18,9 @@ import { HomeComponent } from './views/home/home.component';
 import { CustomDateFormat } from './views/dateFormatInicio/CustomDateFormat';
 import { LoginComponent } from './views/login/login.component';
 import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthenticationComponent } from './views/authentication/authentication.component';
+import { AuthInterceptor } from './shared/auth.interceptor';
 
 
 
@@ -37,11 +38,13 @@ BrowserModule,
     MatIconModule,
     MatSidenavModule,
     MatDividerModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule,
     //Router
   ],
   providers: [
-    {provide: NgbDateParserFormatter, useClass: CustomDateFormat}
+    {provide: NgbDateParserFormatter, useClass: CustomDateFormat},
+    {provide: HTTP_INTERCEPTORS,useClass:AuthInterceptor, multi:true}
    
   ],
   bootstrap: [AppComponent],

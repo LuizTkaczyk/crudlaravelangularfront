@@ -34,6 +34,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CustomDateFormat } from './dateFormatInicio/CustomDateFormat';
 import { RelatorioComponent } from './relatorio/relatorio.component';
 import { ConfigsComponent } from './configs/configs.component';
+import { CreateAccountComponent } from './create-account/create-account.component';
 
 import { NgxMaskModule, IConfig } from 'ngx-mask'
 
@@ -48,10 +49,11 @@ registerLocaleData(ptBr);
     EditComponent,
     InicioComponent,
     RelatorioComponent,
-    ConfigsComponent
+    ConfigsComponent,
+    CreateAccountComponent
   ],
   imports: [
-  CommonModule,
+CommonModule,
     ProdutoRoutingModule,
     FormsModule,
     ReactiveFormsModule,

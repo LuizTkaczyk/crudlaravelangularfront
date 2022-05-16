@@ -16,7 +16,7 @@ const routes: Routes = [
     path: '',
     component: HomeComponent,
     children: [
-      { path: '', component: InicioComponent },
+      { path: 'home', component: InicioComponent },
       { path: 'index', component: IndexComponent },
       { path: 'create', component: CreateComponent },
       { path: 'produto/edit/:idProduto', component: EditComponent },
