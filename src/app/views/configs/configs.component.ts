@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { SharedService } from '../../shared/shared.service';
 import { Route } from '../../app-const';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-configs',
@@ -16,7 +17,7 @@ export class ConfigsComponent implements OnInit {
   taxaJuroParcela;
   id = 0;
 
-  constructor(private sharedService: SharedService) {}
+  constructor(private sharedService: SharedService, private router:Router) {}
 
   ngOnInit() {
     this.juros();
@@ -44,5 +45,7 @@ export class ConfigsComponent implements OnInit {
     this.sharedService
       .update(Route.TAXA_JUROS,this.id,this.form.value)
       .subscribe((data) => {});
+      this.router.navigateByUrl('home');
   }
+  
 }

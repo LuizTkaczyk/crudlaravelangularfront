@@ -30,17 +30,17 @@
 
       <div class="col-md-2 ">
         <label for="valorCompra">Valor de compra</label>
-        <input formControlName="valorCompra" id="valorCompra" type="number" class="form-control"
-          [(ngModel)]="valorCompra"  min="1">
-        <div *ngIf="f.valorCompra.touched && f.valorCompra.invalid" class="alert alert-danger">
+        <input formControlName="valorCompra" id="valorCompra" type="text" class="form-control"
+          [(ngModel)]="this.valorCompra" (change)="valor($event)" min="1" (keypress)="keyPressNumbers($event)">
+        <!-- <div *ngIf="f.valorCompra.invalid" class="alert alert-danger">
           <div *ngIf="f.valorCompra.errors.required">*Valor de compra é obrigatório.</div>
-        </div>
+        </div> -->
       </div>
 
       <div class="col-md-3 ">
         <label for="valorTotalCompra">Valor total de compras</label>
         <input readonly type="text" formControlName="valorTotalCompra" id="valorTotalCompra" class="form-control"
-          [(ngModel)]="valorTotalCompra" [value]="this.valorCompra * this.quantidade | currency:'BRL'">
+          [(ngModel)]="valorTotalCompra" [value]="this.valorTotalCompras() | currency:'BRL'">
       </div>
 
     </div>
@@ -61,7 +61,7 @@
         <label for="valorVenda">Valor final cada unidade</label>
         <input readonly formControlName="valorVenda" id="valorVenda" type="text" class="form-control"
           [(ngModel)]="valorVenda"
-          [value]="((this.lucro / 100) * (this.valorCompra)) + this.valorCompra | currency:'BRL'">
+          [value]="this.valorFinalUnidade() | currency:'BRL'">
 
         <div *ngIf="f.valorVenda.touched && f.valorVenda.invalid" class="alert alert-danger">
           <div *ngIf="f.valorVenda.errors.required">*Valor de venda é obrigatório.</div>
@@ -73,7 +73,7 @@
         <label for="valorTotalVenda">Valor total de venda</label>
         <input readonly type="text" formControlName="valorTotalVenda" id="valorTotalVenda" class="form-control"
           [(ngModel)]="valorTotalVenda"
-          [value]="this.quantidade * (((this.lucro / 100) * (this.valorCompra)) + this.valorCompra) | currency:'BRL'">
+          [value]="this.valorTotalVendas() | currency:'BRL'">
       </div>
 
       <div class="col-md-3">
@@ -89,7 +89,7 @@
        Salvar
       </button>
 
-      <a routerLink="/home/index"  class="btn btn-primary btn-md mr-3">Voltar</a>
+      <a routerLink="index"  class="btn btn-primary btn-md mr-3">Voltar</a>
     </div>
 
   </form>

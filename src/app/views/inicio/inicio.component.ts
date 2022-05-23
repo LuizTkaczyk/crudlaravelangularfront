@@ -286,7 +286,6 @@ export class InicioComponent implements OnInit, AfterContentChecked, OnDestroy {
  
   //adiciona os produtos removidos da lista em um array, apos faz a soma dos valores deste array e subtrai do valor total
   deleteList(index: number, data) {
-    console.log(data)
     this.lista.splice(index, 1);
 
     this.addProdutosDeletadosSemDes.push(Number(data.valorSemDesconto))

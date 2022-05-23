@@ -59,7 +59,6 @@ export class EditComponent implements OnInit {
   ngOnInit(): void {
     this.id = this.route.snapshot.params['idProduto'];
     this.shareService.find(Route.FIND,this.id).subscribe((data: Produto) => {
-      console.log(data)
       this.form.get('nome').setValue(data.nome);
       this.form.get('quantidade').setValue(data.quantidade);
       this.form.get('valorCompra').setValue(data.valorCompra);
@@ -93,10 +92,7 @@ export class EditComponent implements OnInit {
     this.form.value.valorTotalVenda = this.valorTotalVenda;
    
     this.shareService.update(Route.EDITAR_PRODUTO,this.id,this.form.value).subscribe(res => {
-      //console.log(res);
-      this.router.navigateByUrl('home/index');
-    })
-
-    console.log(this.form.value);
+      this.router.navigateByUrl('index');
+    });
   }
 }

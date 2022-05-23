@@ -13,36 +13,44 @@
         </ng-template>
         
         <ng-template ngbPanelContent >
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">Código</th>
-                <th scope="col">Nome</th>
-                <th scope="col">Valor de venda</th>
-                <th scope="col">Quantidade</th>
-                <th scope="col">Desconto %</th>
-                <th scope="col">Valor total com desconto</th>
-                <th scope="col">Valor total sem desconto</th>
-                <th scope="col">Forma de pagamento</th>
+         
+          <table class="table table-bordered ">
+                <ngb-accordion #acc="ngbAccordion" [closeOthers]="true">
+                  <ngb-panel *ngFor="let item of this.relatorioIndividual | keyvalue:keyDescOrder;let a=index" >
 
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let key of objectKeys(item.value);let i=index">
-              
-                <td>{{item.value[i].codigo}}</td>
-                <td>{{item.value[i].nome}}</td>
-                <td>{{item.value[i].valorVenda | currency:'BRL'}}</td>
-                <td>{{item.value[i].quantidade}}</td>
-                <td>{{item.value[i].desconto}}%</td>
-                <td>{{item.value[i].valorComDesconto | currency:'BRL'}}</td>
-                <td>{{item.value[i].valorSemDesconto | currency:'BRL'}}</td>
-                <td>{{item.value[i].formaPagamento}}</td>
-                
-              </tr>
-
-            </tbody>
-           
+                    <ng-template ngbPanelHeader>
+                      <button ngbPanelToggle class="accordion-button2" >Código da venda: {{item.value[0].idVenda}}</button>
+                    </ng-template>
+                    
+                    <ng-template ngbPanelContent>
+                      <thead class="thead-dark">
+                      <th scope="col">Código</th>
+                      <th scope="col">Nome</th>
+                      <th scope="col">Valor de venda</th>
+                      <th scope="col">Quantidade</th>
+                      <th scope="col">Desconto %</th>
+                      <th scope="col">Valor total com desconto</th>
+                      <th scope="col">Valor total sem desconto</th>
+                      <th scope="col">Forma de pagamento</th>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let key of objectKeys(item.value);let i=index">
+                      
+                        <td>{{item.value[i].codigo}}</td>
+                        <td>{{item.value[i].nome}}</td>
+                        <td>{{item.value[i].valorVenda | currency:'BRL'}}</td>
+                        <td>{{item.value[i].quantidade}}</td>
+                        <td>{{item.value[i].desconto}}%</td>
+                        <td>{{item.value[i].valorComDesconto | currency:'BRL'}}</td>
+                        <td>{{item.value[i].valorSemDesconto | currency:'BRL'}}</td>
+                        <td>{{item.value[i].formaPagamento}}</td>
+                        
+                      </tr>
+                    </tbody>
+                    </ng-template>
+                  </ngb-panel>
+                </ngb-accordion>
+            
           </table>
           <hr>
           <div class="form-group row justify-content-between">
@@ -50,7 +58,7 @@
               <!-- Name input -->
               <div class="form-outline">
 
-                  <label class="form-label" for="desconto">Código da venda</label>
+                  <label class="form-label" for="desconto">Código do relatório</label>
                   <input #codVenda readonly class="inputs form-control" value={{item.value[0].cod_relatorio}} />
               
               </div>
@@ -97,8 +105,8 @@
 
   </div>
 
-  <div class="footer">
+  <!-- <div class="footer">
     <h1>footer</h1>
-  </div>
+  </div> -->
 
 </div>

@@ -59,7 +59,6 @@ export class IndexComponent implements OnInit {
   getValues() {
     this.sharedService
       .getPaginate(Route.PAGINATE_PRODUTOS,this.currentPage, this.perPage).subscribe((data: Produto[]) => {
-        //console.log(data)
         setTimeout(() => {
           this.isLoading = true;
           this.paginator.pageIndex = data['current_page'];
@@ -71,8 +70,7 @@ export class IndexComponent implements OnInit {
 
   getAll(){
     this.sharedService.get(Route.TODOS_PRODUTOS).subscribe((data :Produto[]) => {
-      this.searchProdutos = data
-      //console.log(this.searchProdutos)
+      this.searchProdutos = data;
     })
   }
 
@@ -84,13 +82,11 @@ export class IndexComponent implements OnInit {
 
   openCloseOptions() {
     this.panelOpenState = !this.panelOpenState;
-    console.log(this.panelOpenState);
   }
 
   deleteProduto(id) {
     this.sharedService.delete(Route.DELETE_PRODUTO,id).subscribe((res) => {
       this.produtos = this.produtos.filter((item) => item.id !== id);
-      //console.log('Pessoa deletada com sucesso!');
     });
   }
 

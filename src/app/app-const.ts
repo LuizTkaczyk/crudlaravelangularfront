@@ -16,5 +16,6 @@ export class Route {
     static RESTAURAR = 'restaurar-produto/';
     static CREATE_USER = 'create-user';
     static LOGIN = 'auth/login';
+    static RELATORIO_INDIVIDUAL = 'relatorio-individual/'
    
 }

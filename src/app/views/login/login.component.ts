@@ -46,15 +46,6 @@ export class LoginComponent implements OnInit {
       console.log(error);
       
     }
-    
-
-    // try{
-    //   const result = await this.accountService.login(this.usuario);
-    //   console.log('Login efetuado:' + result);
-    //   this.router.navigate(['']);
-    // }catch(error){
-    //   console.log(error);
-    // }
   }
   
 }

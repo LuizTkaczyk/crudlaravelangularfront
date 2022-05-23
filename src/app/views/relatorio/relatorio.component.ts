@@ -15,6 +15,7 @@ export class RelatorioComponent implements OnInit {
   totalSemDesconto;
   totalComDesconto;
   totalDesconto;
+  relatorioIndividual;
   
   constructor(private sharedServie:SharedService) { }
   
@@ -26,7 +27,15 @@ export class RelatorioComponent implements OnInit {
   getRelatorios(){
     this.sharedServie.get(Route.RELATORIOS).subscribe((data)=>{
       this.relatorio = data;
-      console.log(data)
+      console.log(data);
+      
+    })
+  }
+
+  getRelatorioVenda(venda){
+    this.sharedServie.find(Route.RELATORIO_INDIVIDUAL,venda).subscribe((data)=>{
+      this.relatorioIndividual = data;
+      
     })
   }
 
@@ -46,6 +55,8 @@ export class RelatorioComponent implements OnInit {
 
   openRelatorio(value){
     this.getTotais(value)
+    this.getRelatorioVenda(value);
+    
   }
 
   teste(){

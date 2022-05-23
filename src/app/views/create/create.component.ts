@@ -66,8 +66,37 @@ export class CreateComponent implements OnInit {
 
     this.sharedService.post(Route.CRIAR_PRODUTO ,this.form.value).subscribe(res => {
       //console.log('Pessoa criada com sucesso');
-      this.router.navigateByUrl('home/index');
+      this.router.navigateByUrl('index');
     })
+  }
+
+  valor(event){
+    let a  = this.valorCompra.toString();
+    const replaced1 = a.replace(',', '.');
+    console.log(replaced1); 
+    this.valorCompra = Number(replaced1);
+    
+  }
+
+  valorTotalCompras(){
+    return Number(this.valorCompra * this.quantidade);
+  }
+
+  valorFinalUnidade(){
+    return ((this.lucro / 100) * Number(this.valorCompra)) + Number(this.valorCompra);
+  }
+
+  valorTotalVendas(){
+    return this.quantidade * (((this.lucro / 100) * Number(this.valorCompra)) + Number(this.valorCompra));
+  }
+
+  keyPressNumbers(event) {
+    var charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode != 46 && charCode != 44 && charCode > 31 && (charCode < 48 || charCode > 57)) {
+      event.preventDefault();
+      return false;
+    }
+    return true;
   }
 
 }
