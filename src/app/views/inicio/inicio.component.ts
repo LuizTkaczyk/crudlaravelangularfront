@@ -29,7 +29,7 @@ export class InicioComponent implements OnInit, AfterContentChecked, OnDestroy {
   valorVenda = 0;
   valorDesconto = 0;
   quantidade = 1;
-  descontoP = 0;
+  descontoP;
   precoFinal = 0;
   dataVenda;
   somaValorComDesconto = [];
@@ -279,8 +279,7 @@ export class InicioComponent implements OnInit, AfterContentChecked, OnDestroy {
   }
 
   restore(idProduto, data){
-    this.sharedService.postWithId(Route.RESTAURAR, idProduto, data).subscribe((data)=>{})
-    
+    this.sharedService.postWithId(Route.RESTAURAR, idProduto, data).subscribe((data)=>{});
   }
 
  

@@ -2,7 +2,14 @@
 
   <div class="header">
     <h2>Relatório de vendas realizadas</h2>
+    <div class="form-group">
+      <label for="exampleFormControlSelect1">Escolha o mès referente ao relatório</label>
+      <select class="form-control" [(ngModel)]="mesRelatorio" (click)="mesDoAno(mes)">
+        <option *ngFor="let mes of this.mesesAno">{{mes.name}}</option>
+      </select>
+    </div>
   </div>
+
 
   <div class="main">
     <ngb-accordion [closeOthers]="true" >
